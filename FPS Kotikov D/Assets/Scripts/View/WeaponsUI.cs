@@ -53,8 +53,8 @@ namespace FPS_Kotikov_D
 
         public void Awake()
         {
-            _ammunitionText = GameObject.Find("AmmunitionTextUI").GetComponent<TextMeshPro>();
-            _clipText = GameObject.Find("ClipsTextUI").GetComponent<TextMeshPro>();
+            _ammunitionText = transform.Find("AmmunitionTextUI").GetComponent<TextMeshPro>();
+            _clipText = transform.Find("ClipsTextUI").GetComponent<TextMeshPro>();
             _screen = gameObject.GetComponentInChildren<Image>();
             SetActive(false);
         }
@@ -92,6 +92,12 @@ namespace FPS_Kotikov_D
             _ammunitionText.text = RELOADING;
         }
 
+
+        public void PlaceWeaponUI(Transform place)
+        {
+            transform.position = place.position;
+            transform.rotation = place.rotation;
+        }
         #endregion
 
 

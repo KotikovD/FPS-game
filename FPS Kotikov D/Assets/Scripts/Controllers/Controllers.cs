@@ -38,6 +38,7 @@ namespace FPS_Kotikov_D
         public void Initialization()
         {
             ServiceLocator.Resolve<Inventory>().Initialization();
+            ServiceLocator.Resolve<WeaponController>().Initialization();
 
             foreach (var controller in _executeControllers)
             {
@@ -47,7 +48,6 @@ namespace FPS_Kotikov_D
                 }
             }
 
-            
             ServiceLocator.Resolve<InputController>().On();
             ServiceLocator.Resolve<BotController>().On();
         }

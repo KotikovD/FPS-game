@@ -11,7 +11,8 @@ namespace FPS_Kotikov_D
 
         public float Hp = 100;
         public Vision Vision;
-        public Weapons Weapon; //todo с разным оружием 
+        public Weapons Weapon; //todo с разным оружием
+        public Transform WeaponPlace;
         public Transform Target { get; set; }
         public NavMeshAgent Agent { get; private set; }
         public event Action<Bot> OnDieChange;
@@ -21,6 +22,7 @@ namespace FPS_Kotikov_D
         private StateBot _stateBot;
         private Vector3 _point;
         private float _stoppingDistance = 2.0f;
+        
 
         #endregion
 
@@ -66,6 +68,8 @@ namespace FPS_Kotikov_D
         protected override void Awake()
         {
             base.Awake();
+            Instantiate(Weapon, WeaponPlace.position, gameObject.transform.rotation).transform.SetParent(WeaponPlace);
+            Weapon.Switch(true);
             Agent = GetComponent<NavMeshAgent>();
         }
 

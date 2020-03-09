@@ -30,9 +30,6 @@ namespace FPS_Kotikov_D
 
         #region Properties
 
-        /// <summary>
-        /// Object name
-        /// </summary>
         public string Name
         {
             get { return _name; }
@@ -43,9 +40,6 @@ namespace FPS_Kotikov_D
             }
         }
 
-        /// <summary>
-        /// Object layer
-        /// </summary>
         public int Layers
         {
             get { return _layer; }
@@ -60,9 +54,6 @@ namespace FPS_Kotikov_D
             }
         }
 
-        /// <summary>
-        /// Color of object
-        /// </summary>
         public Color Color
         {
             get => _color;
@@ -73,9 +64,6 @@ namespace FPS_Kotikov_D
             }
         }
 
-        /// <summary>
-        /// Object position
-        /// </summary>
         public Vector3 Position
         {
             get
@@ -96,9 +84,6 @@ namespace FPS_Kotikov_D
             }
         }
 
-        /// <summary>
-        /// Object scale
-        /// </summary>
         public Vector3 Scale
         {
             get
@@ -119,9 +104,6 @@ namespace FPS_Kotikov_D
             }
         }
 
-        /// <summary>
-        /// Object rotation
-        /// </summary>
         public Quaternion Rotation
         {
             get
@@ -143,9 +125,6 @@ namespace FPS_Kotikov_D
             }
         }
 
-        /// <summary>
-        /// Show or hide the object
-        /// </summary>
         public bool IsVisible
         {
             get { return _isVisible; }
@@ -159,33 +138,21 @@ namespace FPS_Kotikov_D
             }
         }
 
-        /// <summary>
-        /// Get only Rigidbody object
-        /// </summary>
         public Rigidbody Rigidbody
         {
             get { return _rigidbody; }
         }
 
-        /// <summary>
-        /// Get link to the gameObject
-        /// </summary>
         public GameObject InstanceObject
         {
             get { return _instanceObject; }
         }
 
-        /// <summary>
-        /// Get gameobject Transform
-        /// </summary>
         public Transform GetTransform
         {
             get { return _myTransform; }
         }
 
-        /// <summary>
-        /// Get material of the object
-        /// </summary>
         public Material GetMaterial
         {
             get { return _material; }

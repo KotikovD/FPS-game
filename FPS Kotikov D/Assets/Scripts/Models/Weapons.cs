@@ -18,12 +18,12 @@ namespace FPS_Kotikov_D
         
 
         [SerializeField, Tooltip("Weapon UI placer")]
-        private Transform _weapoonUIplace;
-        [SerializeField, Tooltip("Сила выстрела")]
+        private Transform _weaponUIplace;
+        [SerializeField, Tooltip("Force of shoot")]
         protected float _force = 500;
-        [SerializeField, Tooltip("Время задержки между выстрелами")]
+        [SerializeField, Tooltip("Delay between shoots")]
         protected float _rechargeTime = 0.2f;
-        [SerializeField, Tooltip("Время задержки на перезарядку")]
+        [SerializeField, Tooltip("Reload delay")]
         protected float _reloadTime = 3f;
         [SerializeField, Tooltip("Start clips count")]
         protected int _countClip = 4;
@@ -33,7 +33,6 @@ namespace FPS_Kotikov_D
 
         private int _maxCountAmmunition = 10;
         private Queue<Clip> _clips = new Queue<Clip>();
-        private WeaponsUI _weaponsUI;  //У меня интерфейс оружия - часть оружия, экран находящийся на стволе
 
         #endregion
 
@@ -51,7 +50,11 @@ namespace FPS_Kotikov_D
             set { Clip.CountAmmunition = value; }
         }
 
-        public WeaponsUI WeaponsUI => _weaponsUI;
+        public Transform WeaponUIplace
+        {
+            get { return _weaponUIplace; }
+            private set { _weaponUIplace = value; }
+        }
 
 
         #endregion
@@ -62,7 +65,6 @@ namespace FPS_Kotikov_D
         protected override void Awake()
         {
             base.Awake();
-            _weaponsUI = GameObject.Find("WeaponsUI").GetComponent<WeaponsUI>();
         }
 
         private void Start()
@@ -80,6 +82,12 @@ namespace FPS_Kotikov_D
         #region Metodths
 
         public abstract void Fire();
+
+        public void Switch(bool value)
+        {
+            enabled = value;
+            gameObject.SetActive(value);
+        }
 
         protected void ReadyShoot()
         {
@@ -104,10 +112,6 @@ namespace FPS_Kotikov_D
             Clip = _clips.Dequeue();
         }
 
-       public void MoveWeaponUI()
-        {
-            _weaponsUI.PlaceUI(_weapoonUIplace);
-        }
 
         #endregion
 

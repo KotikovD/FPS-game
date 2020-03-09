@@ -144,9 +144,7 @@ MonoBehaviour:
     type: 3}
   IsReloading: 0
   CanFire: 1
-  WeaponsUI: {fileID: 3449963320019775370, guid: 7d99b2103e2e34c69919b0389ff71bb6,
-    type: 3}
-  _weapoonUIplace: {fileID: 5412960039907051432}
+  _weaponUIplace: {fileID: 5412960039907051432}
   _force: 300
   _rechargeTime: 1
   _reloadTime: 3
