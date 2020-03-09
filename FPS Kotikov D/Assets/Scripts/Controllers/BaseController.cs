@@ -3,7 +3,7 @@
 
 namespace FPS_Kotikov_D
 {
-    public abstract class BaseController : MonoBehaviour
+    public abstract class BaseController
     {
        
 

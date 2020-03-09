@@ -10,7 +10,6 @@ namespace FPS_Kotikov_D.Controller
 
         #region Fields
 
-        private GameObject _flashLightGameObject;
         private FlashlightModel _light;
         private FlashLightUI _flashLightUi;
 
@@ -21,8 +20,7 @@ namespace FPS_Kotikov_D.Controller
 
         public void Initialization()
         {
-            _flashLightGameObject = Instantiate(Resources.Load("Flashlight")) as GameObject;
-            _light = _flashLightGameObject.GetComponent<FlashlightModel>();
+            _light = Object.FindObjectOfType<FlashlightModel>();
             _flashLightUi = Object.FindObjectOfType<FlashLightUI>();
             _flashLightUi.Text = _light.BatteryChargeCurrent;
            

@@ -22,6 +22,11 @@ namespace FPS_Kotikov_D
 
         }
 
+		public int Length
+		{
+			get { return _weapons.Length; }
+		}
+
 		#endregion
 
 

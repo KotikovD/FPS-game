@@ -49,10 +49,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Hp: 100
   Vision:
-    ActiveDis: 10
+    ActiveDis: 20
     ActiveAng: 35
   Weapon: {fileID: -9200603927195050646, guid: a1c4ff3c02ea44ffb9f612e499c0a550, type: 3}
   WeaponPlace: {fileID: 769180508639714996}
+  _delayAfterDie: 10
 --- !u!195 &2117046883
 NavMeshAgent:
   m_ObjectHideFlags: 0

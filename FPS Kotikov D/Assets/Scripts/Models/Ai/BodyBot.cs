@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 namespace FPS_Kotikov_D
 {
@@ -8,6 +9,7 @@ namespace FPS_Kotikov_D
 
         public void SetDamage(InfoCollision info)
         {
+            Debug.Log(info.Damage + "body damage");
             OnApplyDamageChange?.Invoke(info);
         }
     }

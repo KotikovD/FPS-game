@@ -5,30 +5,42 @@ namespace FPS_Kotikov_D
     [System.Serializable]
     public sealed class Vision
     {
-        public float ActiveDis = 10;
-        public float ActiveAng = 35;
+        public float ActiveDistance = 10.0f;
+        public float ActiveAngle = 35.0f;
+        public float LostPlayerDistance = 5.0f;
 
-        public bool VisionM(Transform player, Transform target)
+        public bool VisionPlayer(Transform player, Transform target)
         {
-            return Distance(player, target) && Angle(player, target) && !CheckBloked(player, target);
+            return Distance(player, target, ActiveDistance) && Angle(player, target) && !CheckBlocked(player, target);
         }
 
-        private bool CheckBloked(Transform player, Transform target)
+        public bool LostPlayer(Transform player, Transform target)
         {
-            if (!Physics.Linecast(player.position, target.position, out var hit)) return true;
+            if (CheckBlocked(player, target))
+                return true;
+            if (Distance(player, target, LostPlayerDistance) && CheckBlocked(player, target))
+                return true;
+            return false;
+        }
+
+        private bool CheckBlocked(Transform player, Transform target)
+        {
+            if (!Physics.Linecast(player.position, target.position, out var hit))
+                return true;
             return hit.transform != target;
         }
 
         private bool Angle(Transform player, Transform target)
         {
             var angle = Vector3.Angle(player.forward, target.position - player.position);
-            return angle <= ActiveAng;
+            return angle <= ActiveAngle;
         }
 
-        private bool Distance(Transform player, Transform target)
+        private bool Distance(Transform player, Transform target, float distance)
         {
             var dist = Vector3.Distance(player.position, target.position); //todo оптимизация
-            return dist <= ActiveDis;
+            return dist <= distance;
         }
+
     }
 }

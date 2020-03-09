@@ -10,7 +10,7 @@ namespace FPS_Kotikov_D
         #region Fields
 
         private Weapons _weapon;
-        private WeaponsUI _weaponUI; // weapon UI is part of weapon and must placed on a barrel
+        private WeaponsUI _weaponUI; // weapon UI is a part of weapon and must placed on a barrel
 
         #endregion
 

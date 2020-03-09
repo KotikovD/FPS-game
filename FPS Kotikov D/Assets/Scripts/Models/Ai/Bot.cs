@@ -9,25 +9,26 @@ namespace FPS_Kotikov_D
 
         #region Fileds
 
-        public float Hp = 100;
         public Vision Vision;
-        public Weapons Weapon; //todo с разным оружием
         public Transform WeaponPlace;
-        public Transform Target { get; set; }
-        public NavMeshAgent Agent { get; private set; }
         public event Action<Bot> OnDieChange;
+        public float Hp = 100;
 
+        [SerializeField] private float _delayAfterDie = 10.0f;
 
-        private float _waitTime = 3;
+        private Weapons _weapon;
         private StateBot _stateBot;
         private Vector3 _point;
-        private float _stoppingDistance = 2.0f;
-        
+        private float _stoppingDistance = 3.0f;
+        private float _waitTime = 3.0f;
 
         #endregion
 
 
         #region Properties
+
+        public Transform Target { get; set; }
+        public NavMeshAgent Agent { get; private set; }
 
         private StateBot StateBot
         {
@@ -68,8 +69,14 @@ namespace FPS_Kotikov_D
         protected override void Awake()
         {
             base.Awake();
-            Instantiate(Weapon, WeaponPlace.position, gameObject.transform.rotation).transform.SetParent(WeaponPlace);
-            Weapon.Switch(true);
+
+            var randWeaponNumber = ServiceLocator.Resolve<Inventory>().Length;
+            _weapon = ServiceLocator.Resolve<Inventory>().Weapons[UnityEngine.Random.Range(0, randWeaponNumber)];
+            var localWeapon = Instantiate(_weapon, WeaponPlace.position, gameObject.transform.rotation);
+            _weapon = localWeapon;
+            _weapon.transform.SetParent(WeaponPlace);
+            _weapon.Switch(true);
+
             Agent = GetComponent<NavMeshAgent>();
         }
 
@@ -119,7 +126,7 @@ namespace FPS_Kotikov_D
                     }
                 }
 
-                if (Vision.VisionM(transform, Target))
+                if (Vision.VisionPlayer(transform, Target))
                 {
                     StateBot = StateBot.Detected;
                 }
@@ -130,17 +137,24 @@ namespace FPS_Kotikov_D
                 {
                     Agent.stoppingDistance = _stoppingDistance;
                 }
-                if (Vision.VisionM(transform, Target))
+
+                if (Vision.VisionPlayer(transform, Target))
                 {
-                    Weapon.Fire();
+                    CancelInvoke(nameof(PatrolContinue));
+                    _weapon.Fire();
                 }
                 else
                 {
+                    
                     MovePoint(Target.position);
                 }
 
-                //todo Потеря персонажа
+                if (Vision.LostPlayer(transform, Target))
+                {
+                    Invoke(nameof(PatrolContinue), _waitTime);
+                }
             }
+           
         }
 
         private void ResetStateBot()
@@ -148,9 +162,17 @@ namespace FPS_Kotikov_D
             StateBot = StateBot.None;
         }
 
+        private void PatrolContinue()
+        {
+            StateBot = StateBot.Patrol;
+            MovePoint(_point);
+            Agent.stoppingDistance = 0;
+        }
+
         private void SetDamage(InfoCollision info)
         {
-            //todo реакциия на попадание  
+            StateBot = StateBot.Detected;
+
             if (Hp > 0)
             {
                 Hp -= info.Damage;
@@ -171,8 +193,8 @@ namespace FPS_Kotikov_D
                         tempRbChild = child.gameObject.AddComponent<Rigidbody>();
                     }
                     //tempRbChild.AddForce(info.Dir * Random.Range(10, 300));
-                    
-                    Destroy(child.gameObject, 10);
+
+                    Destroy(child.gameObject, _delayAfterDie);
                 }
 
                 OnDieChange?.Invoke(this);
