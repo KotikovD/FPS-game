@@ -14,7 +14,7 @@
             if (CurrentAmmunition > 0)
             {
                 var temAmmunition = Instantiate(Ammunition, _bulletSpawn.position, _bulletSpawn.rotation);
-                temAmmunition.AddForce(-_bulletSpawn.forward * _force);
+                temAmmunition.AddForce(_bulletSpawn.forward * _force);
 
                 CanFire = false;
                 Invoke(nameof(ReadyShoot), _rechargeTime);

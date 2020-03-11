@@ -2,6 +2,8 @@
 {
 	public sealed class Wall : Environment
 	{
+		
+
 
 	}
 }

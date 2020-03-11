@@ -8,12 +8,19 @@ namespace FPS_Kotikov_D
     {
 
         private void OnCollisionEnter(Collision collision)
-        {  
-            if (collision.collider.tag == "Bullet") return;
+        {
+#if UNITY_EDITOR
+            Debug.Log("Current bullet damage = " + _currentDamage);
+#endif
+            var tempObj = collision.gameObject.GetComponent<ISetDamage>();
 
-            // Вызываем функцию нанесения урона
-            
-            Destroy(InstanceObject);          
+            if (tempObj != null)
+            {
+                tempObj.SetDamage(new InfoCollision(_currentDamage, collision.contacts[0],
+                    collision.transform, Rigidbody.velocity));
+            }
+
+            DestroyAmmunition();
         }
 
 
