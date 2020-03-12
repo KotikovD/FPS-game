@@ -11,7 +11,7 @@ namespace FPS_Kotikov_D.Controller
         #region Fields
 
         private FlashlightModel _light;
-        private FlashLightUI _flashLightUi;
+        private GameUI _gameUI;
 
         #endregion
 
@@ -21,8 +21,8 @@ namespace FPS_Kotikov_D.Controller
         public void Initialization()
         {
             _light = Object.FindObjectOfType<FlashlightModel>();
-            _flashLightUi = Object.FindObjectOfType<FlashLightUI>();
-            _flashLightUi.Text = _light.BatteryChargeCurrent;
+            _gameUI = Object.FindObjectOfType<GameUI>();
+            _gameUI.FlashlightChargeText = _light.BatteryChargeCurrent;
            
             SetActiveFlashlight(false);
         }
@@ -63,8 +63,8 @@ namespace FPS_Kotikov_D.Controller
 
         private void DrawUIBattery()
         {
-            _flashLightUi.Text = _light.BatteryChargeCurrent;
-            _flashLightUi.ImageBar = _light.BatteryChargeCurrent / _light.BatteryChargeMax;
+            _gameUI.FlashlightChargeText = _light.BatteryChargeCurrent;
+            _gameUI.FlashlightImageBar = _light.BatteryChargeCurrent / _light.BatteryChargeMax;
         }
 
         #endregion

@@ -6,8 +6,17 @@ namespace FPS_Kotikov_D
 {
     public sealed class BotController : BaseController, IExecute, IInitialization
     {
+
+
+        #region Fields
+
         private readonly int _countBot = 0;
         private readonly HashSet<Bot> _getBotList = new HashSet<Bot>();
+
+        #endregion
+
+
+        #region Methods
 
         public void Initialization()
         {
@@ -57,5 +66,9 @@ namespace FPS_Kotikov_D
                 bot.Tick();
             }
         }
+
+        #endregion
+
+
     }
 }
