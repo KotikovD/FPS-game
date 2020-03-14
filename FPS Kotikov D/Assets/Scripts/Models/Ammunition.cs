@@ -49,6 +49,8 @@ namespace FPS_Kotikov_D
         private void LossOfDamage()
         {
             _currentDamage -= _lossOfDamageAtTime;
+            if (_currentDamage < 0)
+                DestroyAmmunition();
         }
 
         protected void DestroyAmmunition(float timeToDestruct = 0)

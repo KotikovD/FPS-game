@@ -23,13 +23,15 @@ namespace FPS_Kotikov_D
             ServiceLocator.SetService(new WeaponController());
             ServiceLocator.SetService(new InputController());
             ServiceLocator.SetService(new BotController());
+            ServiceLocator.SetService(new PlayerController());
 
             // Группа Update
-            _executeControllers = new IExecute[4]; 
+            _executeControllers = new IExecute[5]; 
             _executeControllers[0] = ServiceLocator.Resolve<FlashlightController>();
             _executeControllers[1] = ServiceLocator.Resolve<WeaponController>();
             _executeControllers[2] = ServiceLocator.Resolve<InputController>();
             _executeControllers[3] = ServiceLocator.Resolve<BotController>();
+            _executeControllers[4] = ServiceLocator.Resolve<PlayerController>();
         }
 
         #endregion

@@ -145,7 +145,7 @@ namespace FPS_Kotikov_D
                 }
                 else
                 {
-                    
+
                     MovePoint(Target.position);
                 }
 
@@ -154,7 +154,7 @@ namespace FPS_Kotikov_D
                     Invoke(nameof(PatrolContinue), _waitTime);
                 }
             }
-           
+
         }
 
         private void ResetStateBot()

@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 203601160706851500}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.00000053403, y: 0, z: 0}
-  m_LocalScale: {x: 0.21891, y: 0.21891, z: 0.21891}
+  m_LocalScale: {x: 0.65272886, y: 0.65272886, z: 0.65272886}
   m_Children: []
   m_Father: {fileID: 8044198370272708672}
   m_RootOrder: 0
@@ -164,7 +164,7 @@ TrailRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Time: 0.1
+  m_Time: 0.05
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 1
@@ -280,6 +280,7 @@ MonoBehaviour:
   _timeToDestruct: 10
   _baseDamage: 10
   _lossOfDamageAtTime: 1
+  _maxRicochetTimes: 2
 --- !u!54 &-7596446683290340753
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -290,9 +291,9 @@ Rigidbody:
   serializedVersion: 2
   m_Mass: 1
   m_Drag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 3
