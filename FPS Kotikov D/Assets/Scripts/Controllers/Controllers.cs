@@ -28,10 +28,11 @@ namespace FPS_Kotikov_D
             // Группа Update
             _executeControllers = new IExecute[5]; 
             _executeControllers[0] = ServiceLocator.Resolve<FlashlightController>();
-            _executeControllers[1] = ServiceLocator.Resolve<WeaponController>();
-            _executeControllers[2] = ServiceLocator.Resolve<InputController>();
-            _executeControllers[3] = ServiceLocator.Resolve<BotController>();
-            _executeControllers[4] = ServiceLocator.Resolve<PlayerController>();
+            _executeControllers[1] = ServiceLocator.Resolve<PlayerController>();
+            _executeControllers[2] = ServiceLocator.Resolve<WeaponController>();
+            _executeControllers[3] = ServiceLocator.Resolve<InputController>();
+            _executeControllers[4] = ServiceLocator.Resolve<BotController>();
+            
         }
 
         #endregion

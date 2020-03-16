@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 
-namespace FPS_Kotikov_D
+namespace FPS_Kotikov_D.Controller
 {
     public sealed class WeaponController : BaseController, IExecute, IInitialization
     {
@@ -25,6 +25,13 @@ namespace FPS_Kotikov_D
         public void Execute()
         {
             if (!IsActive) return;
+            _weapon.WeaponRotation(ServiceLocator.Resolve<PlayerController>().HitPoint);
+
+#if UNITY_EDITOR
+
+            Debug.DrawRay(_weapon.BulletSpawn.position, _weapon.BulletSpawn.forward * 50, Color.red);
+
+#endif
 
             _weaponUI.DrawUIclips(_weapon.CountClips);
 
@@ -32,6 +39,8 @@ namespace FPS_Kotikov_D
                 _weaponUI.DrawUIAmmunitionReload();
             else
                 _weaponUI.DrawUIammunition(_weapon.CurrentAmmunition);
+
+
         }
 
         public void Fire()

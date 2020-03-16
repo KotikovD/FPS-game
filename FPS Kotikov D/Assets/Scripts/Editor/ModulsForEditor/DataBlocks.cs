@@ -10,7 +10,7 @@ namespace FPS_Kotikov_D.Editor
 
         #region Fields
 
-        private Object _objectForPlace;
+        private GameObject _objectForPlace;
         private int _howEachObjects;
         private string _baseNameForObjects;
 
@@ -19,7 +19,7 @@ namespace FPS_Kotikov_D.Editor
 
         #region Properties
 
-        public Object ObjectForPlace
+        public GameObject ObjectForPlace
         {
             get { return _objectForPlace; }
             set { _objectForPlace = value; }
@@ -27,14 +27,8 @@ namespace FPS_Kotikov_D.Editor
 
         public Transform ObjectPosition
         {
-            get
-            {
-                var obj = (GameObject)_objectForPlace;
-                return obj.transform;
-            }
-
+            get { return _objectForPlace.transform; }
         }
-
 
         public int HowEachObjects
         {
@@ -57,7 +51,7 @@ namespace FPS_Kotikov_D.Editor
         {
             GUILayout.BeginVertical("box");
             GUILayout.Label($"Object {BaseNameForObjects}", EditorStyles.boldLabel);
-            _objectForPlace = EditorGUILayout.ObjectField("Add object", _objectForPlace, typeof(Object), true);
+            _objectForPlace = EditorGUILayout.ObjectField("Add object", _objectForPlace, typeof( GameObject), true) as GameObject;
             _baseNameForObjects = EditorGUILayout.TextField("Object name", BaseNameForObjects);
             _howEachObjects = EditorGUILayout.IntField("How curent objects?", HowEachObjects);
             GUILayout.EndVertical();
