@@ -15,7 +15,6 @@ namespace FPS_Kotikov_D
         public bool IsReloading = false;
         public bool CanFire = true;
         
-
         [SerializeField, Tooltip("Weapon UI placer")]
         private Transform _weaponUIplace;
         [SerializeField, Tooltip("Force of shoot")]
@@ -60,7 +59,6 @@ namespace FPS_Kotikov_D
             get { return _maxCountClips; }
         }
 
-
         public Transform WeaponUIplace
         {
             get { return _weaponUIplace; }
@@ -77,13 +75,10 @@ namespace FPS_Kotikov_D
         protected override void Awake()
         {
             base.Awake();
-            
         }
 
         private void Start()
         {
-            
-
             for (var i = 0; i <= _countClip; i++)
             {
                 AddClip(new Clip { CountAmmunition = _maxCountAmmunition });
@@ -93,6 +88,7 @@ namespace FPS_Kotikov_D
         }
 
         #endregion
+
 
         #region Metodths
 

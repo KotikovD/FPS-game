@@ -24,14 +24,16 @@ namespace FPS_Kotikov_D
             ServiceLocator.SetService(new InputController());
             ServiceLocator.SetService(new BotController());
             ServiceLocator.SetService(new PlayerController());
+            ServiceLocator.SetService(new PocketPCController());
 
             // Группа Update
-            _executeControllers = new IExecute[5]; 
+            _executeControllers = new IExecute[6]; 
             _executeControllers[0] = ServiceLocator.Resolve<FlashlightController>();
             _executeControllers[1] = ServiceLocator.Resolve<PlayerController>();
             _executeControllers[2] = ServiceLocator.Resolve<WeaponController>();
-            _executeControllers[3] = ServiceLocator.Resolve<InputController>();
-            _executeControllers[4] = ServiceLocator.Resolve<BotController>();
+            _executeControllers[3] = ServiceLocator.Resolve<PocketPCController>();
+            _executeControllers[4] = ServiceLocator.Resolve<InputController>();
+            _executeControllers[5] = ServiceLocator.Resolve<BotController>();
             
         }
 
@@ -40,6 +42,7 @@ namespace FPS_Kotikov_D
 
         public void Initialization()
         {
+            //  TODO каджется это лишнее тут 2 строки
             ServiceLocator.Resolve<Inventory>().Initialization();
             ServiceLocator.Resolve<WeaponController>().Initialization();
 

@@ -11,6 +11,7 @@ namespace FPS_Kotikov_D.Controller
 
         private Weapons _weapon;
         private WeaponsUI _weaponUI; // weapon UI is a part of weapon and must placed on a barrel
+        private PlayerController _playerController;
 
         #endregion
 
@@ -20,17 +21,16 @@ namespace FPS_Kotikov_D.Controller
         public void Initialization()
         {
             _weaponUI = Object.FindObjectOfType<WeaponsUI>();
+            _playerController  = ServiceLocator.Resolve<PlayerController>();
         }
 
         public void Execute()
         {
             if (!IsActive) return;
-            _weapon.WeaponRotation(ServiceLocator.Resolve<PlayerController>().HitPoint);
+            _weapon.WeaponRotation(_playerController.HitPoint);
 
 #if UNITY_EDITOR
-
             Debug.DrawRay(_weapon.BulletSpawn.position, _weapon.BulletSpawn.forward * 50, Color.red);
-
 #endif
 
             _weaponUI.DrawUIclips(_weapon.CountClips);
@@ -39,8 +39,6 @@ namespace FPS_Kotikov_D.Controller
                 _weaponUI.DrawUIAmmunitionReload();
             else
                 _weaponUI.DrawUIammunition(_weapon.CurrentAmmunition);
-
-
         }
 
         public void Fire()

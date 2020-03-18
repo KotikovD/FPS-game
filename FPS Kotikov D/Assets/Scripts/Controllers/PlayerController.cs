@@ -46,7 +46,6 @@ namespace FPS_Kotikov_D.Controller
 #endif
             if (Physics.Raycast(ray, out var hit, _player.ViewDistance, _player.ViewLayers))
             {
-                Debug.Log(hit.distance);
                 if (hit.distance < _minViewDistance)
                     _hitPoint = _mainCamera.transform.position + ray.direction * _minViewDistance;
                 else
@@ -67,8 +66,6 @@ namespace FPS_Kotikov_D.Controller
                 _hitPoint = _mainCamera.transform.position + ray.direction * _player.ViewDistance;
                 
             }
-
-            Debug.Log(ray.direction);
 
 
         }
