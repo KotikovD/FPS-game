@@ -12,11 +12,9 @@ namespace FPS_Kotikov_D
 
         public Ammunition Ammunition;
         public Clip Clip;
-        public int CountClip => _clips.Count;
         public bool IsReloading = false;
         public bool CanFire = true;
-
-
+        
         [SerializeField, Tooltip("Weapon UI placer")]
         private Transform _weaponUIplace;
         [SerializeField, Tooltip("Force of shoot")]
@@ -28,7 +26,7 @@ namespace FPS_Kotikov_D
         [SerializeField, Tooltip("Start clips count")]
         protected int _countClip = 4;
         [SerializeField, Tooltip("Bullet spawn place")]
-        protected Transform _bulletSpawn;
+        protected Transform _bulletSpawn; 
         [SerializeField, Tooltip("Max count ammo in one clip")]
         private int _maxCountAmmunition = 10;
         [SerializeField]
@@ -61,13 +59,13 @@ namespace FPS_Kotikov_D
             get { return _maxCountClips; }
         }
 
-
         public Transform WeaponUIplace
         {
             get { return _weaponUIplace; }
             private set { _weaponUIplace = value; }
         }
 
+        public Transform BulletSpawn => _bulletSpawn;
 
         #endregion
 
@@ -91,6 +89,7 @@ namespace FPS_Kotikov_D
 
         #endregion
 
+
         #region Metodths
 
         public abstract void Fire();
@@ -113,10 +112,10 @@ namespace FPS_Kotikov_D
 
         public void ReloadClip()
         {
-            if (CountClip <= 0) return;
-            if (CountClip >= _maxCountClips) return;
+            if (CountClips <= 0) return;
+            if (CountClips >= _maxCountClips) return;
             IsReloading = true;
-            Invoke("ReloadIsFinish", _reloadTime);
+            Invoke(nameof(ReloadIsFinish), _reloadTime);
         }
 
         private void ReloadIsFinish()
@@ -125,6 +124,11 @@ namespace FPS_Kotikov_D
             Clip = _clips.Dequeue();
         }
 
+        public void WeaponRotation(Vector3 aim)
+        {
+            transform.LookAt(aim);
+            BulletSpawn.LookAt(aim);
+        }
 
         #endregion
 

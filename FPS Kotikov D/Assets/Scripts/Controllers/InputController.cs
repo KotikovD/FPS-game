@@ -13,6 +13,7 @@ namespace FPS_Kotikov_D.Controller
         #region Fields
 
         private bool _isActiveFlashlight = false;
+        private bool _isActivePockePC = false;
 
         #endregion
 
@@ -37,6 +38,20 @@ namespace FPS_Kotikov_D.Controller
                 }
             }
 
+            if (Input.GetKeyDown(KeyCode.Alpha3))
+            {
+                _isActivePockePC = !_isActivePockePC;
+                if (_isActivePockePC)
+                {
+                    ServiceLocator.Resolve<PocketPCController>().On();
+                }
+                else
+                {
+                    ServiceLocator.Resolve<PocketPCController>().Off();
+                }
+                
+            }
+
             if (Input.GetKeyDown(KeyCode.Alpha0))
             {
                 ServiceLocator.Resolve<WeaponController>().Off();
@@ -52,6 +67,8 @@ namespace FPS_Kotikov_D.Controller
             {
                 SelectWeapon(1);
             }
+
+            
 
             if (CrossPlatformInputManager.GetButtonDown("Fire1"))
             {

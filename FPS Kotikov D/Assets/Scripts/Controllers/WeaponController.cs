@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 
-namespace FPS_Kotikov_D
+namespace FPS_Kotikov_D.Controller
 {
     public sealed class WeaponController : BaseController, IExecute, IInitialization
     {
@@ -11,6 +11,7 @@ namespace FPS_Kotikov_D
 
         private Weapons _weapon;
         private WeaponsUI _weaponUI; // weapon UI is a part of weapon and must placed on a barrel
+        private PlayerController _playerController;
 
         #endregion
 
@@ -20,11 +21,18 @@ namespace FPS_Kotikov_D
         public void Initialization()
         {
             _weaponUI = Object.FindObjectOfType<WeaponsUI>();
+            _playerController  = ServiceLocator.Resolve<PlayerController>();
         }
 
         public void Execute()
         {
             if (!IsActive) return;
+            _weapon.WeaponRotation(_playerController.HitPoint);
+
+#if UNITY_EDITOR
+            Debug.DrawRay(_weapon.BulletSpawn.position, _weapon.BulletSpawn.forward *
+                GameObject.FindObjectOfType<Player>().MaxViewDistance, Color.blue);
+#endif
 
             _weaponUI.DrawUIclips(_weapon.CountClips);
 

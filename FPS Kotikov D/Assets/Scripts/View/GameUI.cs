@@ -15,6 +15,7 @@ namespace FPS_Kotikov_D
         private Color _fullChargeColor = Color.white;
         private Color _emptyChargeColor = Color.red;
         private Text _playerHp;
+        private Text _iSee;
 
         #endregion
 
@@ -49,6 +50,14 @@ namespace FPS_Kotikov_D
             }
         }
 
+        public string ISee
+        {
+            set
+            {
+                _iSee.text = value;
+            }
+        }
+
         #endregion
 
 
@@ -59,6 +68,7 @@ namespace FPS_Kotikov_D
             _textFlashlightCharge = GameObject.Find("BatteryTextLevel").GetComponent<Text>();
             _imageFlashlightBar = GameObject.Find("BatteryImageLevelBar").GetComponent<Image>();
             _playerHp = GameObject.Find("PlayerHpText").GetComponent<Text>();
+            _iSee = GameObject.Find("SayNameText").GetComponent<Text>();
         }
 
         #endregion

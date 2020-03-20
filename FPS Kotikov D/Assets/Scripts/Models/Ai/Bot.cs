@@ -203,6 +203,9 @@ namespace FPS_Kotikov_D
 
         public void MovePoint(Vector3 point)
         {
+            if (point == null)
+                point = Patrol.GenericPoint(transform);
+
             Agent.SetDestination(point);
         }
 

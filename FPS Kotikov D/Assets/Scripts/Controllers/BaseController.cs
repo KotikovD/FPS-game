@@ -7,7 +7,7 @@ namespace FPS_Kotikov_D
     {
        
 
-        #region Fields
+        #region Properties
 
         public bool IsActive { get; private set; }
 

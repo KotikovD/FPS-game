@@ -2,48 +2,48 @@
 
 namespace FPS_Kotikov_D
 {
-	public sealed class Inventory : BaseController, IInitialization
-	{
+    public sealed class Inventory : BaseController, IInitialization
+    {
 
 
-		#region Fields
+        #region Fields
 
-		private Weapons[] _weapons = new Weapons[5];
+        private Weapons[] _weapons = new Weapons[5];
 
-		#endregion
+        #endregion
 
 
-		#region Properies
+        #region Properies
 
-		public Weapons[] Weapons
+        public Weapons[] Weapons
         {
             get { return _weapons; }
-            private set { _weapons = value;  }
+            private set { _weapons = value; }
 
         }
 
-		public int Length
-		{
-			get { return _weapons.Length; }
-		}
+        public int Length
+        {
+            get { return _weapons.Length; }
+        }
 
-		#endregion
+        #endregion
 
 
-		#region Metodths
+        #region Metodths
 
-		public void Initialization()
-		{
-			_weapons = GameObject.Find("FPSController").GetComponentsInChildren<Weapons>();
+        public void Initialization()
+        {
+            _weapons = GameObject.Find("FPSController").GetComponentsInChildren<Weapons>();
 
-			foreach (var weapon in Weapons)
-			{
+            foreach (var weapon in Weapons)
+            {
                 weapon.enabled = false;
-				weapon.gameObject.SetActive(false);
-			}
-		}
+                weapon.gameObject.SetActive(false);
+            }
+        }
 
-		#endregion }
+        #endregion
+    }
 
-	}
 }

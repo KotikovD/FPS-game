@@ -10,6 +10,10 @@ namespace FPS_Kotikov_D
 
         #region Fields
 
+        public float MaxViewDistance = 50.0f;
+        public float MinViewDistance = 5.0f;
+        public LayerMask ViewLayers;
+
         [SerializeField] private float _maxHp = 100.0f;
         [SerializeField] private float _currentHp = 40.0f;
 
@@ -19,6 +23,7 @@ namespace FPS_Kotikov_D
         #region Properties
 
         public float CurrentHp => _currentHp;
+
 
         #endregion
 
