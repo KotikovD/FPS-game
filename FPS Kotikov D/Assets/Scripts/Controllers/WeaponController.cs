@@ -30,7 +30,8 @@ namespace FPS_Kotikov_D.Controller
             _weapon.WeaponRotation(_playerController.HitPoint);
 
 #if UNITY_EDITOR
-            Debug.DrawRay(_weapon.BulletSpawn.position, _weapon.BulletSpawn.forward * 50, Color.red);
+            Debug.DrawRay(_weapon.BulletSpawn.position, _weapon.BulletSpawn.forward *
+                GameObject.FindObjectOfType<Player>().MaxViewDistance, Color.blue);
 #endif
 
             _weaponUI.DrawUIclips(_weapon.CountClips);

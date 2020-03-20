@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace FPS_Kotikov_D
 {
-    public class PocketPCUI : MonoBehaviour
+    public class PocketPCUI : BaseObjectScene
     {
         
 

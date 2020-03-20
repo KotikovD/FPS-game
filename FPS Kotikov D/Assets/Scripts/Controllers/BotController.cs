@@ -10,7 +10,7 @@ namespace FPS_Kotikov_D
 
         #region Fields
 
-        private readonly int _countBot = 0;
+        private readonly int _countBot = 5;
         private readonly HashSet<Bot> _getBotList = new HashSet<Bot>();
 
         #endregion

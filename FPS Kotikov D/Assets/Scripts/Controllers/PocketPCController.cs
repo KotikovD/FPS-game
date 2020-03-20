@@ -40,12 +40,6 @@
             _pocketPC.Switch(false);
         }
 
-        
-
-        
-
-       
-
         #endregion
 
 
