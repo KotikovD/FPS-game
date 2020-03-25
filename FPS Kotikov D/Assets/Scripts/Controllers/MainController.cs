@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-
+using FPS_Kotikov_D.Data;
 
 namespace FPS_Kotikov_D
 {
@@ -12,7 +12,23 @@ namespace FPS_Kotikov_D
         private Controllers _controllers;
 
 
+        public static MainController Instance { get; private set; }
+        public SaveDataRepository SaveDataRepository { get; private set; }
+
+
+
         #region UnityMethods
+
+        private void Awake()
+        {
+            Instance = this;
+
+            //  MainCamera = Camera.main;
+            
+            SaveDataRepository = new SaveDataRepository();
+
+
+        }
 
         private void Start()
         {

@@ -1,0 +1,8 @@
+<Player>
+  <dKGO value="xEGKD" />
+  <PosX value="-11.5" X="-11.5" />
+  <PosY value="27.596" />
+  <PosZ value="0.9" />
+  <IsEnable value="True" />
+  <Info Unity="2019.3.2f1">System Language: Russian</Info>
+</Player>

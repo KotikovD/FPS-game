@@ -12,6 +12,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: AmmunitionClip - Plasma Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 1743780856681315465, guid: b036349d50e044a3990c5fabf69285ea,
+        type: 3}
+      propertyPath: m_TagString
+      value: PickUps
+      objectReference: {fileID: 0}
     - target: {fileID: 1743780856681315466, guid: b036349d50e044a3990c5fabf69285ea,
         type: 3}
       propertyPath: m_LocalPosition.x

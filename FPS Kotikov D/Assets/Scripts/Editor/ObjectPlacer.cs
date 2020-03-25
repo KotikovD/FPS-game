@@ -91,7 +91,7 @@ namespace FPS_Kotikov_D.Editor
                     if (NavMesh.SamplePosition(randomPoint, out var hit, dis, NavMesh.AllAreas))
                     {
                         var obj = Instantiate(block.ObjectForPlace, hit.position, Quaternion.identity) as GameObject;
-                        obj.name = $"{block.BaseNameForObjects} {i}";
+                        obj.name = $"{block.BaseNameForObjects}{i}";
                         _objects.Add(obj);
                         i++;
                     }

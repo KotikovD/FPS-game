@@ -25,6 +25,18 @@ namespace FPS_Kotikov_D.Controller
         {
             if (!IsActive) return;
 
+
+            if (Input.GetKeyDown(KeyCode.O))
+            {
+               MainController.Instance.SaveDataRepository.Save();
+            }
+
+            if (Input.GetKeyDown(KeyCode.L))
+            {
+                MainController.Instance.SaveDataRepository.Load();
+            }
+
+
             if (CrossPlatformInputManager.GetButtonDown("FlashLight"))
             { 
                 _isActiveFlashlight = !_isActiveFlashlight;
