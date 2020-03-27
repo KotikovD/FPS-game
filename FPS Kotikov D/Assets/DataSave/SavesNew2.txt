@@ -1,0 +1,8 @@
+<GameScene>
+  <Instance PosX="8.768935" PosY="26.3397465" PosZ="-10.3743839">PlasmaClip</Instance>
+  <Instance PosX="-26.9178944" PosY="26.3397465" PosZ="-15.3193359">PlasmaClip</Instance>
+  <Instance PosX="2.00051951" PosY="26.3397465" PosZ="-14.54946">PlasmaClip</Instance>
+  <Instance PosX="9.730659" PosY="26.3397465" PosZ="-29.1462688">BulletClip</Instance>
+  <Instance PosX="273.00528" PosY="-1717.72485" PosZ="-92.41082">BulletClip</Instance>
+  <Instance PosX="3.68154931" PosY="26.3397465" PosZ="-10.0995293">AidKit</Instance>
+</GameScene>

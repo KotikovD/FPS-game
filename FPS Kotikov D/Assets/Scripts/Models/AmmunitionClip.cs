@@ -4,7 +4,7 @@
 namespace FPS_Kotikov_D
 {
 
-    public class AmmunitionClip : BaseObjectScene
+    public class AmmunitionClip : BaseObjectScene, ISerializable
     {
 
         

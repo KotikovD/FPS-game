@@ -171,6 +171,9 @@ namespace FPS_Kotikov_D
             _myTransform = _instanceObject.transform;
             if (GetComponent<Renderer>())
                 _material = GetComponent<Renderer>().material;
+
+            if (GetComponent<ISerializable>() != null)
+                Object.FindObjectOfType<SerializableObjects>().PrefubsForSave.Add(gameObject);
         }
 
         #endregion

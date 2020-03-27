@@ -21,6 +21,42 @@ namespace FPS_Kotikov_D.Editor
         private List<DataBlocks> _dataBlocks = new List<DataBlocks>();
         private List<GameObject> _objects = new List<GameObject>();
         private List<bool> _objectsGroups = new List<bool>();
+        private GameObject _parentGO;
+
+        #endregion
+
+
+        #region DataBlocks
+
+        private class DataBlocks
+        {
+            private GameObject _objectForPlace;
+            private int _howEachObjects;
+
+            public GameObject ObjectForPlace
+            {
+                get { return _objectForPlace; }
+                set { _objectForPlace = value; }
+            }
+
+            public int HowEachObjects
+            {
+                get { return _howEachObjects; }
+                set { _howEachObjects = value; }
+            }
+
+            public void CreateBlock()
+            {
+                GUILayout.BeginVertical();
+                GUILayout.Label("Prefub", EditorStyles.boldLabel);
+                _objectForPlace = EditorGUILayout.ObjectField("Game object", _objectForPlace, typeof(GameObject), true) as GameObject;
+                _howEachObjects = EditorGUILayout.IntField("How objects place?", _howEachObjects);
+                GUILayout.EndVertical();
+                GUILayout.Space(20);
+
+            }
+
+        }
 
         #endregion
 
@@ -49,12 +85,10 @@ namespace FPS_Kotikov_D.Editor
             }
 
             GUILayout.Space(20);
-            if (GUILayout.Button("Create objects"))
+            if (GUILayout.Button("Place"))
                 CreateObjects();
 
-            GUILayout.Space(10);
-            if (GUILayout.Button("Remove all objects"))
-                RemoveAllObjects();
+            
 
             GUILayout.Space(20);
             for (int z = 0; z < _howTotalObjects; z++)
@@ -62,14 +96,16 @@ namespace FPS_Kotikov_D.Editor
                 if (_objectsGroups.Count < _howTotalObjects)
                     _objectsGroups.Add(false);
 
-                var name = _dataBlocks[z].BaseNameForObjects == null ? "Empty object name" : _dataBlocks[z].BaseNameForObjects;
+                var name = _dataBlocks[z].ObjectForPlace == null ? "Prefub name" : _dataBlocks[z].ObjectForPlace.name;
                 _objectsGroups[z] = EditorGUILayout.Toggle($"{name}", _objectsGroups[z]);
             }
 
             GUILayout.Space(10);
-            if (GUILayout.Button("Remove selected groups objects"))
+            if (GUILayout.Button("Remove selected"))
                 RemoveGroup();
-
+            GUILayout.Space(10);
+            if (GUILayout.Button("Remove ALL"))
+                RemoveAllObjects();
         }
 
         #endregion
@@ -80,6 +116,8 @@ namespace FPS_Kotikov_D.Editor
 
         private void CreateObjects()
         {
+            _parentGO =  new GameObject { name = "CreatedObjects" };
+
             for (int a = 0; a < _howTotalObjects; a++)
             {
                 var block = _dataBlocks[a];
@@ -91,7 +129,8 @@ namespace FPS_Kotikov_D.Editor
                     if (NavMesh.SamplePosition(randomPoint, out var hit, dis, NavMesh.AllAreas))
                     {
                         var obj = Instantiate(block.ObjectForPlace, hit.position, Quaternion.identity) as GameObject;
-                        obj.name = $"{block.BaseNameForObjects}{i}";
+                        obj.name = block.ObjectForPlace.name;
+                        obj.transform.parent = _parentGO.transform;
                         _objects.Add(obj);
                         i++;
                     }
@@ -101,10 +140,7 @@ namespace FPS_Kotikov_D.Editor
 
         private void RemoveAllObjects()
         {
-            foreach (GameObject obj in _objects)
-            {
-                DestroyImmediate(obj);
-            }
+            DestroyImmediate(GameObject.Find("CreatedObjects"));
         }
 
         private void RemoveGroup()
@@ -114,7 +150,7 @@ namespace FPS_Kotikov_D.Editor
                 if (_objectsGroups[i] == true)
                     for (int a = 0; a < _dataBlocks[i].HowEachObjects; a++)
                     {
-                        DestroyImmediate(GameObject.Find($"{_dataBlocks[i].BaseNameForObjects} {a}"));
+                        DestroyImmediate(GameObject.Find(_dataBlocks[i].ObjectForPlace.name));
                     }
             }
         }

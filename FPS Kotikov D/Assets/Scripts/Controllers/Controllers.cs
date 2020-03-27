@@ -1,5 +1,5 @@
 ﻿using FPS_Kotikov_D.Controller;
-
+using FPS_Kotikov_D.Data;
 
 namespace FPS_Kotikov_D
 {
@@ -25,6 +25,8 @@ namespace FPS_Kotikov_D
             ServiceLocator.SetService(new BotController());
             ServiceLocator.SetService(new PlayerController());
             ServiceLocator.SetService(new PocketPCController());
+            ServiceLocator.SetService(new SaveDataRepository());
+
 
             // Группа Update
             _executeControllers = new IExecute[6]; 

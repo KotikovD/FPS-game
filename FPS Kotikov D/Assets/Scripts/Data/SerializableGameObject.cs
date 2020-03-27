@@ -33,6 +33,7 @@ namespace FPS_Kotikov_D.Data
             Y = y;
             Z = z;
         }
+
         public static implicit operator Vector3(SerializableVector3 value)
         {
             return new Vector3(value.X, value.Y, value.Z);
