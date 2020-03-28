@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using FPS_Kotikov_D.Data;
+
 
 namespace FPS_Kotikov_D
 {
@@ -15,7 +15,7 @@ namespace FPS_Kotikov_D
         #region UnityMethods
 
 
-        private void Start()
+        public void Start()
         {
             _controllers = new Controllers();
             _controllers.Initialization();

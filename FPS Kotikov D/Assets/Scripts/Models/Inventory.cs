@@ -34,7 +34,7 @@ namespace FPS_Kotikov_D
 
         public void Initialization()
         {
-            _weapons = GameObject.Find("FPSController").GetComponentsInChildren<Weapons>();
+            _weapons = GameObject.FindObjectOfType<Player>().GetComponentsInChildren<Weapons>();
 
             foreach (var weapon in Weapons)
             {

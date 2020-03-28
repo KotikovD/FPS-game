@@ -1,0 +1,40 @@
+<GameScene>
+  <Instance PosX="-35" PosY="26.3397465" PosZ="9.513423" QuaX="2.19409646E-08" QuaY="0.7029228" QuaZ="1.15209886E-08" QuaW="0.71126616">PlasmaClip</Instance>
+  <Instance PosX="4.371519" PosY="26.3397465" PosZ="12.9839306" QuaX="-4.393908E-08" QuaY="0.71024245" QuaZ="-1.66628418E-08" QuaW="0.70395714">PlasmaClip</Instance>
+  <Instance PosX="-7.195404" PosY="26.3397465" PosZ="8.16437149" QuaX="8.021941E-08" QuaY="0.5990216" QuaZ="6.94610662E-08" QuaW="0.800732851">PlasmaClip</Instance>
+  <Instance PosX="-7.181252" PosY="26.3397465" PosZ="5.746175" QuaX="-4.458025E-08" QuaY="0.739079535" QuaZ="-5.567756E-10" QuaW="0.6736182">PlasmaClip</Instance>
+  <Instance PosX="-12.1319742" PosY="26.3397465" PosZ="-20.7384357" QuaX="-4.10522176E-08" QuaY="0.9272176" QuaZ="-1.20768613E-08" QuaW="0.374523163">PlasmaClip</Instance>
+  <Instance PosX="-33.33336" PosY="26.3397465" PosZ="-16.4826317" QuaX="-4.54547475E-08" QuaY="0.935926557" QuaZ="1.15240724E-08" QuaW="0.352195382">PlasmaClip</Instance>
+  <Instance PosX="14.1618538" PosY="26.3397465" PosZ="-28.7104244" QuaX="-4.391612E-08" QuaY="0.7221145" QuaZ="-1.40247147E-08" QuaW="0.6917736">PlasmaClip</Instance>
+  <Instance PosX="14.9116278" PosY="26.3397465" PosZ="7.915577" QuaX="-2.75042371E-08" QuaY="0.9904049" QuaZ="9.266836E-10" QuaW="0.138196051">PlasmaClip</Instance>
+  <Instance PosX="6.42959356" PosY="26.3397465" PosZ="-17.2286377" QuaX="7.41121156E-08" QuaY="0.4378074" QuaZ="4.4077332E-08" QuaW="0.8990688">PlasmaClip</Instance>
+  <Instance PosX="10.1069269" PosY="26.95553" PosZ="-6.44581461" QuaX="-0.6652025" QuaY="-0.72345823" QuaZ="0.115146585" QuaW="-0.144413486">PlasmaClip</Instance>
+  <Instance PosX="14.1864748" PosY="26.9323349" PosZ="-4.331735" QuaX="-0.7283908" QuaY="0.101084441" QuaZ="0.05152133" QuaW="0.67570287">PlasmaClip</Instance>
+  <Instance PosX="-9.948661" PosY="26.3397465" PosZ="-3.57162786" QuaX="-4.01727256E-08" QuaY="0.551957965" QuaZ="-1.01898552E-08" QuaW="0.833871961">BulletClip</Instance>
+  <Instance PosX="7.335204" PosY="26.3397465" PosZ="7.75875854" QuaX="-1.74118483E-07" QuaY="0.986276269" QuaZ="-9.827665E-08" QuaW="0.1651035">BulletClip</Instance>
+  <Instance PosX="-7.242012" PosY="26.3397465" PosZ="-4.57540846" QuaX="-2.46651375E-08" QuaY="0.366605341" QuaZ="-4.360269E-08" QuaW="0.9303766">BulletClip</Instance>
+  <Instance PosX="-17.4351635" PosY="26.3397465" PosZ="3.58065653" QuaX="1.65675864E-08" QuaY="0.5140848" QuaZ="-1.14814938E-07" QuaW="0.8577393">BulletClip</Instance>
+  <Instance PosX="7.34685373" PosY="26.3397388" PosZ="18.4309444" QuaX="-0.0003621101" QuaY="0.855241358" QuaZ="0.000129370019" QuaW="0.518229663">BulletClip</Instance>
+  <Instance PosX="-5.48260832" PosY="26.3397465" PosZ="18.5737457" QuaX="-4.09397538E-09" QuaY="0.990071058" QuaZ="-1.300952E-07" QuaW="0.1405683">BulletClip</Instance>
+  <Instance PosX="9.543562" PosY="26.3397465" PosZ="0.054988075" QuaX="-1.56322272E-07" QuaY="0.374789238" QuaZ="-5.81985E-07" QuaW="0.9271101">BulletClip</Instance>
+  <Instance PosX="-5.464958" PosY="26.3397465" PosZ="3.662557" QuaX="-2.28957816E-07" QuaY="0.0499375276" QuaZ="5.00705752E-08" QuaW="0.998752356">BulletClip</Instance>
+  <Instance PosX="-11.0694494" PosY="26.3397465" PosZ="-1.44303155" QuaX="-4.86391372E-08" QuaY="0.753808856" QuaZ="-2.95950677E-08" QuaW="0.657093763">BulletClip</Instance>
+  <Instance PosX="-32.771965" PosY="26.3397465" PosZ="18.5" QuaX="2.9025756E-07" QuaY="0.9865773" QuaZ="-1.98461962E-07" QuaW="0.163295209">BulletClip</Instance>
+  <Instance PosX="-18.2584076" PosY="26.3397465" PosZ="-21.5984726" QuaX="-4.4188134E-08" QuaY="0.8853979" QuaZ="1.32601166E-08" QuaW="0.464833915">BulletClip</Instance>
+  <Instance PosX="15.0812311" PosY="27.55037" PosZ="-6.371604" QuaX="-0.7695089" QuaY="-0.3803903" QuaZ="-0.473667562" QuaW="-0.196973071">AidKit</Instance>
+  <Instance PosX="22.8728218" PosY="26.3397465" PosZ="16.6733818" QuaX="6.29624637E-08" QuaY="0.998570859" QuaZ="-1.52892312E-07" QuaW="0.0534445">AidKit</Instance>
+  <Instance PosX="-21.0647812" PosY="26.3397465" PosZ="-16.2578964" QuaX="1.90329359E-07" QuaY="0.8853213" QuaZ="-1.51680752E-07" QuaW="0.464979768">AidKit</Instance>
+  <Instance PosX="-3.166668" PosY="26.3397465" PosZ="-7.008411" QuaX="1.54350673E-07" QuaY="0.7466598" QuaZ="5.31036562E-07" QuaW="0.665206134">AidKit</Instance>
+  <Instance PosX="24.6939068" PosY="26.3397465" PosZ="18.5" QuaX="3.9487464E-08" QuaY="0.7447352" QuaZ="-9.97268E-08" QuaW="0.6673601">AidKit</Instance>
+  <Instance PosX="3.037583" PosY="26.3397465" PosZ="6.32915258" QuaX="-4.341204E-08" QuaY="0.8729435" QuaZ="-6.20668672E-09" QuaW="0.48782143">AidKit</Instance>
+  <Instance PosX="-11.6336317" PosY="26.3397465" PosZ="11.3905029" QuaX="-1.24880177E-08" QuaY="0.305427551" QuaZ="-4.32197877E-09" QuaW="0.9522153">AidKit</Instance>
+  <Instance PosX="22.745306" PosY="26.3397465" PosZ="18.5" QuaX="4.35363461E-08" QuaY="0.145960912" QuaZ="-3.58211E-08" QuaW="0.9892904">AidKit</Instance>
+  <Instance PosX="-9.386417" PosY="26.3397465" PosZ="-29.3501472" QuaX="-5.77261865E-08" QuaY="0.8489865" QuaZ="4.76504E-09" QuaW="0.528414547">AidKit</Instance>
+  <Instance PosX="-8.052357" PosY="26.3397465" PosZ="-32.5" QuaX="-3.02633225E-08" QuaY="0.9050237" QuaZ="4.570205E-09" QuaW="0.425361127">AidKit</Instance>
+  <Instance PosX="8.529651" PosY="26.33975" PosZ="18.5765648" QuaX="0.000367844739" QuaY="0.998596251" QuaZ="4.800445E-05" QuaW="0.0529662147">AidKit</Instance>
+  <Instance PosX="14.3895969" PosY="26.3397465" PosZ="9.507795" QuaX="1.57156652E-08" QuaY="0.130454525" QuaZ="3.390447E-08" QuaW="0.9914543">AidKit</Instance>
+  <Instance PosX="12.41" PosY="6.57" PosZ="-9.32" QuaX="-0" QuaY="-0" QuaZ="-0" QuaW="1">Enemy</Instance>
+  <Instance PosX="-3.166668" PosY="26.3397465" PosZ="6.78373432" QuaX="2.24561152E-08" QuaY="0.179336324" QuaZ="-3.62915458E-08" QuaW="0.983787835">BulletClip</Instance>
+  <Instance PosX="25" PosY="26.3397465" PosZ="-17.166666" QuaX="5.34137623E-09" QuaY="0.9833053" QuaZ="-9.662455E-08" QuaW="0.18196395">AidKit</Instance>
+  <Instance PosX="-8.97" PosY="27.319746" PosZ="-18.71" QuaX="0" QuaY="-0.120596066" QuaZ="0" QuaW="0.9927017" CurrentHP="50" Gun="CurrentAmmunition = 0, CountClips = 6" PlasmaGun="CurrentAmmunition = 0, CountClips = 11">Player</Instance>
+</GameScene>

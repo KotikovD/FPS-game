@@ -27,6 +27,7 @@ namespace FPS_Kotikov_D.Controller
         public void Execute()
         {
             if (!IsActive) return;
+            if (_weapon == null) return;
             _weapon.WeaponRotation(_playerController.HitPoint);
 
 #if UNITY_EDITOR

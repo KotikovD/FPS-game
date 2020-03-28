@@ -8,9 +8,11 @@ namespace FPS_Kotikov_D.Data
     public struct SerializableGameObject
     {
         public string Name;
+        //public float PlayerHp;
         public SerializableVector3 Pos;
         public SerializableQuaternion Rot;
         public SerializableVector3 Scale;
+        public SerializablePlayer SPlayer;
         //public Component[] Components;
         public bool IsEnable;
 
@@ -20,6 +22,79 @@ namespace FPS_Kotikov_D.Data
         }
     }
 
+    [Serializable]
+    public struct SerializablePlayer
+    {
+        public float CurrentHp;
+        public SerializableWeapons[] Guns;
+
+        public SerializablePlayer(Player player)
+        {
+            CurrentHp = player.CurrentHp;
+
+            var guns = player.GetComponentsInChildren<Gun>(true);
+            Debug.Log("guns coun " + guns.Length);
+            Guns = new SerializableWeapons[guns.Length];
+            for (int i = 0; i < guns.Length; i++)
+                Guns[i] = guns[i];
+
+        }
+
+        public static implicit operator SerializablePlayer(Player player)
+        {
+            return new SerializablePlayer(player);
+        }
+
+    }
+
+    #region Weapoons
+
+    [Serializable]
+    public struct SerializableWeapons
+    {
+        public string WeaponName;
+        public SerializableAmmuniton Ammunition;
+
+        public SerializableWeapons(Gun gun)
+        {
+            WeaponName = gun.name;
+            Ammunition = new SerializableAmmuniton(gun.CurrentAmmunition, gun.CountClips);
+
+        }
+
+        public static implicit operator SerializableWeapons(Gun Gun)
+        {
+            return new SerializableWeapons(Gun);
+        }
+
+        public override string ToString()
+        {
+            return $"WeaponName = {WeaponName}";
+        }
+    }
+
+    [Serializable]
+    public struct SerializableAmmuniton
+    {
+        
+        public int CurrentAmmunition;
+        public int CountClips;
+
+        public SerializableAmmuniton(int currentAmmunition, int countClips)
+        {
+            CurrentAmmunition = currentAmmunition;
+            CountClips = countClips;
+
+        }
+
+        public override string ToString()
+        {
+            return $"CurrentAmmunition = {CurrentAmmunition}, CountClips = {CountClips}";
+        }
+    }
+
+    #endregion
+
 
     [Serializable]
     public struct SerializableVector3
@@ -27,6 +102,7 @@ namespace FPS_Kotikov_D.Data
         public float X;
         public float Y;
         public float Z;
+
         public SerializableVector3(float x, float y, float z)
         {
             X = x;

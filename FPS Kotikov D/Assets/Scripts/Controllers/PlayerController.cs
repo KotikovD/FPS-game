@@ -35,6 +35,7 @@ namespace FPS_Kotikov_D.Controller
         public void Execute()
         {
             if (!IsActive) return;
+            if (!_mainCamera) return;
             _gameUI.PlayerHpText = _player.CurrentHp;
 
             ray = _mainCamera.ScreenPointToRay(_screenCenter);

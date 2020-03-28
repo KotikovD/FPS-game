@@ -12,42 +12,77 @@ namespace FPS_Kotikov_D
     public class SerializableObjects : MonoBehaviour
     {
 
-
+        // Filed gets data from objects with ISerializable
         public List<GameObject> PrefubsForSave = new List<GameObject>();
 
 
-        public List<GameObject> GetGameObjcets()
+        public List<GameObject> CreateGameObjectsList()
         {
+            PrefubsForSave.Clear();
+            foreach (var obj in Object.FindObjectsOfType<BaseObjectScene>())
+                //Adding objects to PrefubsForSave
+                obj.SaveData();
+
             return PrefubsForSave;
         }
 
-
-        public void DestroyGameObjects()
+        public void DestroyStartCoroutine(SerializableGameObject[] objData)
         {
-            foreach (var obj in PrefubsForSave)
-            {
-                if (obj == null) continue;
-                Destroy(obj);  
-            }
-            PrefubsForSave.Clear();
+            StartCoroutine(DestroyOldGameObjects(objData));
         }
 
+        public IEnumerator DestroyOldGameObjects(SerializableGameObject[] objData)
+        {
+            var objs = GameObject.FindObjectsOfType<BaseObjectScene>();
+            foreach (var obj in objs)
+            {
+                if (obj.GetComponent<ISerializable>() != null)
+                {
+                    Destroy(obj.gameObject);
+                    
+#if UNITY_EDITOR
+                    Debug.Log("Destroied " + obj.name);
+#endif
+                }
+                yield return new WaitForSeconds(0.2f);
+            }
+            StopCoroutine("DestroyOldGameObjects");
+            StartCoroutine(InstantiateGameObjects(objData));
+        }
 
-
-        public void InstantiateGameObjects(SerializableGameObject[] objData)
+        public IEnumerator InstantiateGameObjects(SerializableGameObject[] objData)
         {
             foreach (var obj in objData)
             {
-
                 if (obj.Name == null) continue;
-                var newObj = Instantiate(Resources.Load<GameObject>(obj.Name), obj.Pos, Quaternion.identity);
+                var newObj = Instantiate(Resources.Load<GameObject>(obj.Name), obj.Pos, obj.Rot);
                 newObj.name = obj.Name;
 
-            }
+                var player = newObj.GetComponent<Player>();
+                if (player)
+                {
+                    player.CurrentHp = obj.SPlayer.CurrentHp;
 
+                    var guns = player.GetComponentsInChildren<Gun>();
+                    foreach (var serilizeGun in obj.SPlayer.Guns)
+                    {
+                        foreach (var gun in guns)
+                        {
+                            if (gun.name.Equals(serilizeGun.WeaponName))
+                            {
+                                gun.CountClips = serilizeGun.Ammunition.CountClips;
+                                gun.CurrentAmmunition = serilizeGun.Ammunition.CurrentAmmunition;
+                            }
+                        }
+                    }
+                }
+                yield return new WaitForSeconds(0.2f);
+            }
+            StopCoroutine("InstantiateGameObjects");
+            // Rebooting controllers
+            GameObject.FindObjectOfType<MainController>().Start();
         }
 
 
     }
-
 }

@@ -14,9 +14,9 @@ namespace FPS_Kotikov_D
 
         private void OnCollisionEnter(Collision collision)
         {
-#if UNITY_EDITOR
-            Debug.Log("Current bullet damage = " + _currentDamage);
-#endif
+//#if UNITY_EDITOR
+//            Debug.Log("Current bullet damage = " + _currentDamage);
+//#endif
 
             var tempObj = collision.gameObject.GetComponent<ISetDamage>();
 
@@ -27,9 +27,9 @@ namespace FPS_Kotikov_D
 
                 if (collision.gameObject.GetComponent<Wall>() && _ricochetCounter < _maxRicochetTimes)
                 {
-#if UNITY_EDITOR
-                    Debug.DrawRay(collision.contacts[0].point, collision.contacts[0].normal, Color.red, 100);
-#endif
+//#if UNITY_EDITOR
+//                    Debug.DrawRay(collision.contacts[0].point, collision.contacts[0].normal, Color.red, 100);
+//#endif
                     Rigidbody.velocity = Vector3.Reflect(Rigidbody.velocity.normalized, collision.contacts[0].normal) * Rigidbody.velocity.magnitude;
                     _currentDamage /= _damageRicochetDivider;
                     _ricochetCounter++;

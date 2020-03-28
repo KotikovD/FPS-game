@@ -22,7 +22,7 @@ namespace FPS_Kotikov_D.Editor
         private List<GameObject> _objects = new List<GameObject>();
         private List<bool> _objectsGroups = new List<bool>();
         private GameObject _parentGO;
-
+        private bool _randomRotation = true;
         #endregion
 
 
@@ -76,6 +76,7 @@ namespace FPS_Kotikov_D.Editor
             _howTotalObjects = EditorGUILayout.IntSlider("How total objects?", _howTotalObjects, MINVALUE, MAXOBJECTS);
             _minDistance = EditorGUILayout.IntSlider("Min Distance", _minDistance, MINVALUE, MAXVALUE);
             _maxDistance = EditorGUILayout.IntSlider("Max Distance", _maxDistance, MINVALUE, MAXVALUE);
+            _randomRotation = EditorGUILayout.Toggle($"RandomRotation", _randomRotation);
             GUILayout.Space(20);
 
             for (int i = 0; i < _howTotalObjects; i++)
@@ -88,7 +89,7 @@ namespace FPS_Kotikov_D.Editor
             if (GUILayout.Button("Place"))
                 CreateObjects();
 
-            
+
 
             GUILayout.Space(20);
             for (int z = 0; z < _howTotalObjects; z++)
@@ -116,7 +117,9 @@ namespace FPS_Kotikov_D.Editor
 
         private void CreateObjects()
         {
-            _parentGO =  new GameObject { name = "CreatedObjects" };
+            _parentGO = GameObject.Find("CreatedObjects");
+            if (_parentGO == null)
+                _parentGO = new GameObject { name = "CreatedObjects" };
 
             for (int a = 0; a < _howTotalObjects; a++)
             {
@@ -126,9 +129,13 @@ namespace FPS_Kotikov_D.Editor
                     var dis = Random.Range(_minDistance, _maxDistance);
                     var randomPoint = Random.insideUnitSphere * dis;
 
+                    Quaternion rot = _randomRotation == false ?
+                        Quaternion.identity :
+                        new Quaternion(0, Random.Range(0, 360), 0, Random.Range(0, 360));
+
                     if (NavMesh.SamplePosition(randomPoint, out var hit, dis, NavMesh.AllAreas))
                     {
-                        var obj = Instantiate(block.ObjectForPlace, hit.position, Quaternion.identity) as GameObject;
+                        var obj = Instantiate(block.ObjectForPlace, hit.position, rot) as GameObject;
                         obj.name = block.ObjectForPlace.name;
                         obj.transform.parent = _parentGO.transform;
                         _objects.Add(obj);

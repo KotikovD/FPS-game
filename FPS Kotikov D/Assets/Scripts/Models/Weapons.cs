@@ -14,7 +14,7 @@ namespace FPS_Kotikov_D
         public Clip Clip;
         public bool IsReloading = false;
         public bool CanFire = true;
-        
+
         [SerializeField, Tooltip("Weapon UI placer")]
         private Transform _weaponUIplace;
         [SerializeField, Tooltip("Force of shoot")]
@@ -26,7 +26,7 @@ namespace FPS_Kotikov_D
         [SerializeField, Tooltip("Start clips count")]
         protected int _countClip = 4;
         [SerializeField, Tooltip("Bullet spawn place")]
-        protected Transform _bulletSpawn; 
+        protected Transform _bulletSpawn;
         [SerializeField, Tooltip("Max count ammo in one clip")]
         private int _maxCountAmmunition = 10;
         [SerializeField]
@@ -41,6 +41,11 @@ namespace FPS_Kotikov_D
         public int CountClips
         {
             get { return _clips.Count; }
+            set
+            {
+                for (int i = 0; i < value; i++)
+                    AddClip(new Clip { CountAmmunition = _maxCountAmmunition });
+            }
         }
 
         public int CurrentAmmunition
