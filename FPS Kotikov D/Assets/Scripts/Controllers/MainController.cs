@@ -14,7 +14,8 @@ namespace FPS_Kotikov_D
 
         #region UnityMethods
 
-        private void Start()
+
+        public void Start()
         {
             _controllers = new Controllers();
             _controllers.Initialization();

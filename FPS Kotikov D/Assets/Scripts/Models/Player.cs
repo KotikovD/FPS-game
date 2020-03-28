@@ -4,7 +4,7 @@
 namespace FPS_Kotikov_D
 {
 
-    public class Player : BaseObjectScene, IHeal
+    public class Player : BaseObjectScene, IHeal, ISerializable
     {
 
 
@@ -22,8 +22,11 @@ namespace FPS_Kotikov_D
 
         #region Properties
 
-        public float CurrentHp => _currentHp;
-
+        public float CurrentHp
+        {
+            get { return _currentHp; }
+            set { _currentHp = value; }
+        }
 
         #endregion
 

@@ -3,7 +3,7 @@
 
 namespace FPS_Kotikov_D
 {
-    public class Enemy : BaseObjectScene, ISetDamage
+    public class Enemy : BaseObjectScene, ISetDamage, ISerializable
     {
 
 
@@ -31,10 +31,6 @@ namespace FPS_Kotikov_D
         }
 
         public float CurrentHealth => _currentHealth;
-        //{
-        //    get { return _currentHealth; }
-        //    set { _currentHealth = value; }
-        //}
 
         #endregion
 

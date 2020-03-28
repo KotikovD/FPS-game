@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
+using FPS_Kotikov_D.Data;
 
 namespace FPS_Kotikov_D.Controller
 {
@@ -14,6 +15,7 @@ namespace FPS_Kotikov_D.Controller
 
         private bool _isActiveFlashlight = false;
         private bool _isActivePockePC = false;
+        private bool _isActiveGameMenu = false;
 
         #endregion
 
@@ -24,6 +26,23 @@ namespace FPS_Kotikov_D.Controller
         public void Execute()
         {
             if (!IsActive) return;
+
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                var gameMenu = ServiceLocatorMonoBehaviour.GetService<Reference>().GameMenu;
+
+                _isActiveGameMenu = !_isActiveGameMenu;
+                if (_isActiveGameMenu)
+                {
+                    gameMenu.ActiveGameMenu(true);
+                }
+                else
+                {
+                    gameMenu.ActiveGameMenu(false);
+                }
+
+            }
+
 
             if (CrossPlatformInputManager.GetButtonDown("FlashLight"))
             { 

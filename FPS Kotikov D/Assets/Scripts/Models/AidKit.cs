@@ -4,7 +4,7 @@
 namespace FPS_Kotikov_D
 {
 
-    public class AidKit : BaseObjectScene
+    public class AidKit : BaseObjectScene, ISerializable
     {
 
         [SerializeField] private float _healValue = 25.0f;
