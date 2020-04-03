@@ -10,12 +10,14 @@ namespace FPS_Kotikov_D
 
         #region Fields
 
+        private static Text _messageBox;
+
         private Text _textFlashlightCharge;
         private Image _imageFlashlightBar;
         private Color _fullChargeColor = Color.white;
         private Color _emptyChargeColor = Color.red;
         private Text _playerHp;
-        private Text _iSee;
+        
 
         #endregion
 
@@ -50,11 +52,11 @@ namespace FPS_Kotikov_D
             }
         }
 
-        public string ISee
+        public static string SetMessageBox
         {
             set
             {
-                _iSee.text = value;
+                _messageBox.text = value;
             }
         }
 
@@ -68,7 +70,7 @@ namespace FPS_Kotikov_D
             _textFlashlightCharge = GameObject.Find("BatteryTextLevel").GetComponent<Text>();
             _imageFlashlightBar = GameObject.Find("BatteryImageLevelBar").GetComponent<Image>();
             _playerHp = GameObject.Find("PlayerHpText").GetComponent<Text>();
-            _iSee = GameObject.Find("SayNameText").GetComponent<Text>();
+            _messageBox = GameObject.Find("SetMessageText").GetComponent<Text>();
         }
 
         #endregion

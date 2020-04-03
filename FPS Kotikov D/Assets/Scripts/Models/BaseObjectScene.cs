@@ -12,6 +12,8 @@ namespace FPS_Kotikov_D
 
 
         #region Fields
+        [SerializeField] protected int _springJointForceMyltipler = 15;
+        [SerializeField, Range(1, 50)] protected int _throwForceMultipler = 15;
 
         protected int _layer;
         protected Color _color;
@@ -24,11 +26,25 @@ namespace FPS_Kotikov_D
         protected Rigidbody _rigidbody;
         protected string _name;
         protected bool _isVisible;
+        protected bool _isRaised = false;
+
 
         #endregion
 
 
         #region Properties
+
+        public int ThrowForceMultipler
+        {
+            get => _throwForceMultipler;
+            set { _throwForceMultipler = value; }
+        }
+
+        public bool IsRaised
+        {
+            get => _isRaised;
+            set { _isRaised = value; }
+        }
 
         public string Name
         {
@@ -173,18 +189,16 @@ namespace FPS_Kotikov_D
                 _material = GetComponent<Renderer>().material;
         }
 
+        #endregion
+
+
+        #region Methods
+
         public void SaveData()
         {
             if (GetComponent<ISerializable>() != null)
                 Object.FindObjectOfType<SerializableObjects>().PrefubsForSave.Add(gameObject);
         }
-
-
-
-        #endregion
-
-
-        #region Methods
 
         /// <summary>
         /// Set layer for current object and all his childrens for any level of attachment
@@ -224,6 +238,37 @@ namespace FPS_Kotikov_D
                 AskColor(d, color);
             }
         }
+
+        protected void ShowName()
+        {
+            if (_isRaised)
+                GameUI.SetMessageBox = string.Empty;
+            else
+                GameUI.SetMessageBox = gameObject.name;
+        }
+
+        protected void RaiseUp()
+        {
+            if (_isRaised == true) return;
+            _isRaised = true;
+
+            var rb = gameObject.GetComponent<Rigidbody>();
+            if (rb == null)
+                rb = gameObject.AddComponent<Rigidbody>();
+
+            var bc = gameObject.GetComponent<BoxCollider>();
+            if (bc == null)
+                bc = gameObject.GetComponent<BoxCollider>();
+
+            rb.useGravity = false;
+            rb.interpolation = RigidbodyInterpolation.Extrapolate;
+            rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+
+            Player.Interaction.connectedBody = rb;
+            Player.Interaction.connectedAnchor = bc.center;
+            Player.Interaction.spring = rb.mass * _springJointForceMyltipler;
+        }
+
 
         #endregion
 

@@ -3,8 +3,8 @@
 
 namespace FPS_Kotikov_D
 {
-
-    public class AmmunitionClip : BaseObjectScene, ISerializable
+    [RequireComponent(typeof(Rigidbody))]
+    public class AmmunitionClip : BaseObjectScene, ISerializable, IInteraction, IShowMessage
     {
 
         
@@ -39,6 +39,16 @@ namespace FPS_Kotikov_D
         private void DestroyAmmunitionClip()
         {
             Destroy(gameObject);
+        }
+
+        public void Interaction<T>(T value = null) where T : class
+        {
+            RaiseUp();
+        }
+
+        public void ShowMessage()
+        {
+            ShowName();
         }
 
         #endregion

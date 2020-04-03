@@ -7,7 +7,7 @@ namespace FPS_Kotikov_D.Controller
     /// <summary>
     /// Read all inputs in programm 
     /// </summary>
-    public class InputController : BaseController, IExecute
+    public class InputController : BaseController, IExecute, IInitialization
     {
 
 
@@ -16,11 +16,18 @@ namespace FPS_Kotikov_D.Controller
         private bool _isActiveFlashlight = false;
         private bool _isActivePockePC = false;
         private bool _isActiveGameMenu = false;
+        private bool _areHandsBusy = false;
+        private InteractionPoint _interaction;
 
         #endregion
 
 
         #region Methods
+
+        public void Initialization()
+        {
+            _interaction = GameObject.FindObjectOfType<InteractionPoint>();
+        }
 
 
         public void Execute()
@@ -59,6 +66,7 @@ namespace FPS_Kotikov_D.Controller
 
             if (Input.GetKeyDown(KeyCode.Alpha3))
             {
+                if (_areHandsBusy) return;
                 _isActivePockePC = !_isActivePockePC;
                 if (_isActivePockePC)
                 {
@@ -73,27 +81,60 @@ namespace FPS_Kotikov_D.Controller
 
             if (Input.GetKeyDown(KeyCode.Alpha0))
             {
-                ServiceLocator.Resolve<WeaponController>().Off();
+                
+                    ServiceLocator.Resolve<WeaponController>().Off();
             }
-
 
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
+                if (_areHandsBusy) return;
                 SelectWeapon(0);
             }
 
             if (Input.GetKeyDown(KeyCode.Alpha2))
             {
+                if (_areHandsBusy) return;
                 SelectWeapon(1);
             }
 
-            
+
+
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                if (!_areHandsBusy)
+                {
+                    _areHandsBusy = true;
+                    ServiceLocator.Resolve<PlayerController>().TryUse = true;
+                    ServiceLocator.Resolve<WeaponController>().Off();
+                    ServiceLocator.Resolve<PocketPCController>().Off();
+                }
+                else
+                {
+                    _interaction.ReleaseObject();
+                    _areHandsBusy = false;
+                }
+            }
+
+            if (Input.GetKeyUp(KeyCode.E))
+            {
+                ServiceLocator.Resolve<PlayerController>().TryUse = false;
+            }
+
+
 
             if (CrossPlatformInputManager.GetButtonDown("Fire1"))
             {
-                if (ServiceLocator.Resolve<WeaponController>().IsActive)
+                if (_interaction.IsCatched)
                 {
-                    ServiceLocator.Resolve<WeaponController>().Fire();
+                    _interaction.ThrowObject();
+                    _areHandsBusy = false;
+                }
+                else
+                {
+                    if (ServiceLocator.Resolve<WeaponController>().IsActive)
+                    {
+                        ServiceLocator.Resolve<WeaponController>().Fire();
+                    }
                 }
             }
         }
@@ -113,6 +154,8 @@ namespace FPS_Kotikov_D.Controller
                 ServiceLocator.Resolve<WeaponController>().On(tempWeapon);
             }
         }
+
+       
 
 
         #endregion

@@ -10,6 +10,8 @@ namespace FPS_Kotikov_D.Controller
 
         const int TWO = 2;
 
+        public bool TryUse = false;
+
         private Vector3 _hitPoint;
         private GameUI _gameUI;
         private Player _player;
@@ -44,20 +46,29 @@ namespace FPS_Kotikov_D.Controller
             Debug.DrawRay(_mainCamera.transform.position, _mainCamera.transform.forward * _player.MaxViewDistance, Color.red);  
 #endif
 
-            if (Physics.Raycast(ray, out var hit, _player.MaxViewDistance, _player.ViewLayers))
+            if (Physics.Raycast(ray, out var hit, _player.InteractionDistance, _player.ViewLayers))
             {
                 if (hit.distance < _player.MinViewDistance)
                     _hitPoint = _mainCamera.transform.position + ray.direction * _player.MinViewDistance;
                 else
                     _hitPoint = hit.point;
+
+                var objIS = hit.collider.gameObject.GetComponent<IShowMessage>();
+                if (objIS != null)
+                    objIS.ShowMessage();
                 
-                var obj = hit.collider.gameObject.GetComponent<IViewObject>();
-                if (obj != null)
-                    _gameUI.ISee = obj.ViewObject(); 
+                    
+
+                if (TryUse)
+                {
+                    var objII = hit.collider.gameObject.GetComponent<IInteraction>();
+                    if (objII != null)
+                        objII.Interaction(_gameUI);
+                }
             }
             else
             {
-                _gameUI.ISee = string.Empty;
+                GameUI.SetMessageBox = string.Empty;
                 _hitPoint = _mainCamera.transform.position + ray.direction * _player.MaxViewDistance; 
             }
         }
