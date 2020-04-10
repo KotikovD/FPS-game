@@ -10,10 +10,16 @@ namespace FPS_Kotikov_D
             //todo перемещение по точкам
             Vector3 result;
 
-            var dis = Random.Range(5, 50);
+            var dis = Random.Range(5, 25);
             var randomPoint = Random.insideUnitSphere * dis;
 
-            NavMesh.SamplePosition(agent.position + randomPoint,
+            //if (NavMesh.SamplePosition(randomPoint, out var hit, dis, NavMesh.AllAreas))
+            //{
+
+
+            //}
+
+                NavMesh.SamplePosition(agent.position + randomPoint,
                 out var hit, dis, NavMesh.AllAreas);
             result = hit.position;
 

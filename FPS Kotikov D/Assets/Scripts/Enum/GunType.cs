@@ -1,9 +1,10 @@
 ﻿namespace FPS_Kotikov_D
 {
-	public enum GunType
+	public enum GunType : int
 	{
 		None = 0,
-		Gun = 2,
-		PlasmaGun = 4
+		Pistol = 2,
+		Rifle = 4,
+        PlasmaGun = 6
 	}
 }

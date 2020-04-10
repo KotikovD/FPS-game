@@ -10,7 +10,7 @@ namespace FPS_Kotikov_D
 
         #region Fields
 
-        private readonly int _countBot = 0;
+        private readonly int _countBot = 10;
         private readonly HashSet<Bot> _getBotList = new HashSet<Bot>();
 
         #endregion
@@ -46,10 +46,7 @@ namespace FPS_Kotikov_D
 
         private void RemoveBotToList(Bot bot)
         {
-            if (!_getBotList.Contains(bot))
-            {
-                return;
-            }
+            if (!_getBotList.Contains(bot)) return;
 
             bot.OnDieChange -= RemoveBotToList;
             _getBotList.Remove(bot);
@@ -57,10 +54,7 @@ namespace FPS_Kotikov_D
 
         public void Execute()
         {
-            if (!IsActive)
-            {
-                return;
-            }
+            if (!IsActive) return;
 
             for (var i = 0; i < _getBotList.Count; i++)
             {

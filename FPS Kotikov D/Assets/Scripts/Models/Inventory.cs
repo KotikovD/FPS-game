@@ -34,8 +34,7 @@ namespace FPS_Kotikov_D
 
         public void Initialization()
         {
-            _weapons = GameObject.FindObjectOfType<Player>().GetComponentsInChildren<Weapons>();
-
+            _weapons = Resources.LoadAll<Weapons>("Guns");
             foreach (var weapon in Weapons)
             {
                 weapon.enabled = false;

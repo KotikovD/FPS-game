@@ -17,10 +17,12 @@ namespace FPS_Kotikov_D
         [SerializeField] private float _delayAfterDie = 10.0f;
 
         private Weapons _weapon;
+        private Animator _animator;
         private StateBot _stateBot;
         private Vector3 _point;
         private float _stoppingDistance = 3.0f;
         private float _waitTime = 3.0f;
+        private Vector3 _move;
 
         #endregion
 
@@ -43,12 +45,14 @@ namespace FPS_Kotikov_D
                         break;
                     case StateBot.Patrol:
                         Color = Color.green;
+                        //Agent.speed = 0.5f;
                         break;
                     case StateBot.Inspection:
                         Color = Color.yellow;
                         break;
                     case StateBot.Detected:
                         Color = Color.red;
+                        // Agent.speed = 3.5f;
                         break;
                     case StateBot.Died:
                         Color = Color.gray;
@@ -76,7 +80,7 @@ namespace FPS_Kotikov_D
             _weapon = localWeapon;
             _weapon.transform.SetParent(WeaponPlace);
             _weapon.Switch(true);
-
+            _animator = transform.GetComponentInChildren<Animator>();
             Agent = GetComponent<NavMeshAgent>();
         }
 
@@ -113,7 +117,7 @@ namespace FPS_Kotikov_D
                             StateBot = StateBot.Patrol;
                             _point = Patrol.GenericPoint(transform);
                             MovePoint(_point);
-                            Agent.stoppingDistance = 0;
+
                         }
                         else
                         {
@@ -145,8 +149,8 @@ namespace FPS_Kotikov_D
                 }
                 else
                 {
-
                     MovePoint(Target.position);
+
                 }
 
                 if (Vision.LostPlayer(transform, Target))
@@ -155,6 +159,24 @@ namespace FPS_Kotikov_D
                 }
             }
 
+            _move = Agent.velocity;
+            _move.Normalize();
+            var m_TurnAmount = Mathf.Atan2(_move.x, _move.z);
+            _animator.SetFloat("AngularSpeed", m_TurnAmount, 0.1f, Time.deltaTime);
+            _animator.SetFloat("VelocityX", _move.magnitude, 0.1f, Time.deltaTime);
+
+        }
+
+        private void OnAnimatorIK()
+        {
+            if (!Agent.enabled) return;
+            if (StateBot == StateBot.Detected)
+            {
+                _animator.SetLookAtWeight(0.5f);
+                _animator.SetLookAtPosition(Target.position);
+            }
+            else
+                _animator.SetLookAtWeight(0f);
         }
 
         private void ResetStateBot()
@@ -183,19 +205,18 @@ namespace FPS_Kotikov_D
             {
                 StateBot = StateBot.Died;
                 Agent.enabled = false;
-                foreach (var child in GetComponentsInChildren<Transform>())
-                {
-                    child.parent = null;
+                //foreach (var child in GetComponentsInChildren<Transform>())
+                //{
+                //    child.parent = null;
 
-                    var tempRbChild = child.GetComponent<Rigidbody>();
-                    if (!tempRbChild)
-                    {
-                        tempRbChild = child.gameObject.AddComponent<Rigidbody>();
-                    }
-                    //tempRbChild.AddForce(info.Dir * Random.Range(10, 300));
+                //    var tempRbChild = child.GetComponent<Rigidbody>();
+                //    if (!tempRbChild)
+                //    {
+                //        tempRbChild = child.gameObject.AddComponent<Rigidbody>();
+                //    }
 
-                    Destroy(child.gameObject, _delayAfterDie);
-                }
+                //    Destroy(child.gameObject, _delayAfterDie);
+                //}
 
                 OnDieChange?.Invoke(this);
             }
@@ -205,7 +226,6 @@ namespace FPS_Kotikov_D
         {
             if (point == null)
                 point = Patrol.GenericPoint(transform);
-
             Agent.SetDestination(point);
         }
 

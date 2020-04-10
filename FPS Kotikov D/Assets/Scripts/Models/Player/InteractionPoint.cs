@@ -69,14 +69,12 @@ namespace FPS_Kotikov_D
         private void LateUpdate()
         {
             if (!_isCatched) return;
-
             if (_objColider == null)
             {
                 ReleaseObject();
                 return;
             }
                 
-
             var objPos = transform.position - _objColider.center;
             var objRot = _objTr.rotation;
 
@@ -85,7 +83,6 @@ namespace FPS_Kotikov_D
 
             objRot = Quaternion.Lerp(objRot, transform.rotation, LERPSMOUTH * Time.deltaTime);
             _objTr.rotation = objRot;
-
         }
 
         #endregion

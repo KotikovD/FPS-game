@@ -14,23 +14,12 @@ namespace UnityStandardAssets.Characters.FirstPerson
         public float MaximumX = 90F;
         public bool smooth;
         public float smoothTime = 5f;
+        public static bool lockCursor = true;
 
-        private static bool lockCursor = true;
-        private static bool _freeLookRotation = true;
 
         private Quaternion m_CharacterTargetRot;
         private Quaternion m_CameraTargetRot;
-        private static bool m_cursorIsLocked = true;
-
-
-        public static bool LockCameraView
-        {
-            set
-            {
-                _freeLookRotation = value;
-                SetCursorLock(value);
-            }
-        }
+        private bool m_cursorIsLocked = true;
 
         public void Init(Transform character, Transform camera)
         {
@@ -38,11 +27,14 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_CameraTargetRot = camera.localRotation;
         }
 
+        public static bool LockCameraView
+        {
+            get { return lockCursor; }
+            set { lockCursor = value; }
+        }
 
         public void LookRotation(Transform character, Transform camera)
         {
-            if (!_freeLookRotation) return;
-
             float yRot = CrossPlatformInputManager.GetAxis("Mouse X") * XSensitivity;
             float xRot = CrossPlatformInputManager.GetAxis("Mouse Y") * YSensitivity;
 
@@ -68,7 +60,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             UpdateCursorLock();
         }
 
-        public static void SetCursorLock(bool value)
+        public void SetCursorLock(bool value)
         {
             lockCursor = value;
             if (!lockCursor)
@@ -76,13 +68,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
             }
-
-            if (lockCursor)
-            {
-                Cursor.lockState = CursorLockMode.Locked;
-                Cursor.visible = false;
-            }
-          
         }
 
         public void UpdateCursorLock()
@@ -91,8 +76,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
             if (lockCursor)
                 InternalLockUpdate();
         }
-
-
 
         private void InternalLockUpdate()
         {

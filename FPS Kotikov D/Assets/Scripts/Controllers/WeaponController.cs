@@ -10,7 +10,8 @@ namespace FPS_Kotikov_D.Controller
         #region Fields
 
         private Weapons _weapon;
-        private WeaponsUI _weaponUI; // weapon UI is a part of weapon and must placed on a barrel
+        // weapon UI is a part of weapon and must placed on a barrel
+        private WeaponsUI _weaponUI; 
         private PlayerController _playerController;
 
         #endregion
@@ -28,6 +29,7 @@ namespace FPS_Kotikov_D.Controller
         {
             if (!IsActive) return;
             if (_weapon == null) return;
+            if (!_weapon.AvailableForPlayer) return;
             _weapon.WeaponRotation(_playerController.HitPoint);
 
 #if UNITY_EDITOR
@@ -54,13 +56,13 @@ namespace FPS_Kotikov_D.Controller
             if (weapon.Length > 0)
                 _weapon = weapon[0] as Weapons;
             if (_weapon == null) return;
+            if (!_weapon.AvailableForPlayer) return;
 
             base.On(_weapon);
 
+            _weapon.Switch(true);
             _weaponUI.transform.SetParent(_weapon.WeaponUIplace.transform);
             _weaponUI.PlaceWeaponUI(_weapon.WeaponUIplace.transform);
-            _weapon.Switch(true);
-
             _weaponUI.SetActive(true);
 
         }

@@ -9,11 +9,11 @@
 [Bb]uilds/
 [Ll]ogs/
 [Mm]emoryCaptures/
-[Aa]ssets/DownloadAssets/**
-[Aa]ssets/Resources/**
-[Aa]ssets/SampleScenes/**
-[Aa]ssets/Scenes/**
-[Aa]ssets/Standard Assets/**
+[Aa]ssets/DownloadAssets/
+[Aa]ssets/Resources/
+[Aa]ssets/SampleScenes/
+[Aa]ssets/Scenes/
+[Aa]ssets/Standard Assets/
 
 # Asset meta data should only be ignored when the corresponding asset is also ignored
 [Aa]ssets/**/*.meta
@@ -48,8 +48,8 @@ ExportedObj/
 *.mdb
 *.opendb
 *.VC.db
-# *.fbx
-# *.asset
+*.fbx
+*.asset
 
 # Unity3D generated meta files
 *.pidb.meta
@@ -74,3 +74,4 @@ crashlytics-build.properties
 *.mat
 *.wav
 *.unity
+*.prefab

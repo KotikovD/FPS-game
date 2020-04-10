@@ -89,6 +89,7 @@ namespace FPS_Kotikov_D.Controller
             {
                 if (_areHandsBusy) return;
                 SelectWeapon(0);
+                
             }
 
             if (Input.GetKeyDown(KeyCode.Alpha2))
@@ -148,10 +149,11 @@ namespace FPS_Kotikov_D.Controller
         private void SelectWeapon(int i)
         {
             ServiceLocator.Resolve<WeaponController>().Off();
-            Weapons tempWeapon = ServiceLocator.Resolve<Inventory>().Weapons[i]; //todo инкапсулировать
+            Weapons tempWeapon = ServiceLocator.Resolve<PlayerController>().Weapons[i]; //todo инкапсулировать
             if (tempWeapon != null)
             {
-                ServiceLocator.Resolve<WeaponController>().On(tempWeapon);
+               var weapon =  ServiceLocator.Resolve<PlayerController>().SwitchActiveWeapon(tempWeapon, true);
+                ServiceLocator.Resolve<WeaponController>().On(weapon);
             }
         }
 

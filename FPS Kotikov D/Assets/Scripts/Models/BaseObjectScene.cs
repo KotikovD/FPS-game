@@ -12,7 +12,7 @@ namespace FPS_Kotikov_D
 
 
         #region Fields
-        [SerializeField] protected int _springJointForceMyltipler = 15;
+        [SerializeField, Range(1, 50)] protected int _springJointForceMyltipler = 15;
         [SerializeField, Range(1, 50)] protected int _throwForceMultipler = 15;
 
         protected int _layer;
@@ -258,11 +258,11 @@ namespace FPS_Kotikov_D
 
             var bc = gameObject.GetComponent<BoxCollider>();
             if (bc == null)
-                bc = gameObject.GetComponent<BoxCollider>();
+                bc = gameObject.AddComponent<BoxCollider>();
 
             rb.useGravity = false;
-            rb.interpolation = RigidbodyInterpolation.Extrapolate;
-            rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+            //rb.interpolation = RigidbodyInterpolation.Extrapolate;
+           // rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
 
             Player.Interaction.connectedBody = rb;
             Player.Interaction.connectedAnchor = bc.center;

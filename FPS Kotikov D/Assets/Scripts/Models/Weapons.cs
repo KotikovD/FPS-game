@@ -10,6 +10,7 @@ namespace FPS_Kotikov_D
 
         #region Fields
 
+        public GunType GunType;
         public Ammunition Ammunition;
         public Clip Clip;
         public bool IsReloading = false;
@@ -31,12 +32,23 @@ namespace FPS_Kotikov_D
         private int _maxCountAmmunition = 10;
         [SerializeField]
         private int _maxCountClips = 10;
+        [SerializeField]
+        private bool _availableForPlayer = false;
+
         private Queue<Clip> _clips = new Queue<Clip>();
+
+
 
         #endregion
 
 
         #region Properties
+
+        public bool AvailableForPlayer
+        {
+            get { return _availableForPlayer; }
+            set { _availableForPlayer = value; }
+        }
 
         public int CountClips
         {
@@ -76,11 +88,6 @@ namespace FPS_Kotikov_D
 
 
         #region UnityMethods
-
-        protected override void Awake()
-        {
-            base.Awake();
-        }
 
         private void Start()
         {

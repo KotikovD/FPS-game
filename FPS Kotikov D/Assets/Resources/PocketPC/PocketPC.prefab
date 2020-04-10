@@ -13220,7 +13220,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8559817961003374612
 Transform:
   m_ObjectHideFlags: 0
@@ -13250,6 +13250,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4abe1eca2d7c448e7a182273698302c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _springJointForceMyltipler: 15
+  _throwForceMultipler: 15
   _pages:
   - {fileID: 6517503042406286349}
   - {fileID: 5969913199383282180}
@@ -13306,8 +13308,7 @@ Canvas:
   m_Enabled: 1
   serializedVersion: 3
   m_RenderMode: 2
-  m_Camera: {fileID: 2914054829449512387, guid: cff2532171424407b9ad1e90a9348f6e,
-    type: 3}
+  m_Camera: {fileID: 0}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
