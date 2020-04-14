@@ -12,8 +12,6 @@ namespace FPS_Kotikov_D
 
 
         #region Fields
-        [SerializeField, Range(1, 50)] protected int _springJointForceMyltipler = 15;
-        [SerializeField, Range(1, 50)] protected int _throwForceMultipler = 15;
 
         protected int _layer;
         protected Color _color;
@@ -28,17 +26,10 @@ namespace FPS_Kotikov_D
         protected bool _isVisible;
         protected bool _isRaised = false;
 
-
         #endregion
 
 
         #region Properties
-
-        public int ThrowForceMultipler
-        {
-            get => _throwForceMultipler;
-            set { _throwForceMultipler = value; }
-        }
 
         public bool IsRaised
         {
@@ -203,8 +194,6 @@ namespace FPS_Kotikov_D
         /// <summary>
         /// Set layer for current object and all his childrens for any level of attachment
         /// </summary>
-        /// <param name="obj">Object</param>
-        /// <param name="lvl">Layer</param>
         private void AskLayer(Transform obj, int lvl)
         {
             obj.gameObject.layer = lvl;
@@ -220,9 +209,6 @@ namespace FPS_Kotikov_D
         /// <summary>
         /// Set color for current object and all his childrens for any level of attachment
         /// </summary>
-        /// <param name="obj">Object</param>
-        /// <param name="mat">Material</param>
-        /// <param name="color">Color</param>
         private void AskColor(Transform obj, Color color)
         {
             if (obj.TryGetComponent<Renderer>(out var renderer))
@@ -239,10 +225,12 @@ namespace FPS_Kotikov_D
             }
         }
 
-        protected void ShowName()
+        protected void ShowName(string name = default)
         {
             if (_isRaised)
                 GameUI.SetMessageBox = string.Empty;
+            else if (name != default)
+                GameUI.SetMessageBox = name;
             else
                 GameUI.SetMessageBox = gameObject.name;
         }
@@ -251,22 +239,6 @@ namespace FPS_Kotikov_D
         {
             if (_isRaised == true) return;
             _isRaised = true;
-
-            var rb = gameObject.GetComponent<Rigidbody>();
-            if (rb == null)
-                rb = gameObject.AddComponent<Rigidbody>();
-
-            var bc = gameObject.GetComponent<BoxCollider>();
-            if (bc == null)
-                bc = gameObject.AddComponent<BoxCollider>();
-
-            rb.useGravity = false;
-            //rb.interpolation = RigidbodyInterpolation.Extrapolate;
-           // rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
-
-            Player.Interaction.connectedBody = rb;
-            Player.Interaction.connectedAnchor = bc.center;
-            Player.Interaction.spring = rb.mass * _springJointForceMyltipler;
         }
 
 

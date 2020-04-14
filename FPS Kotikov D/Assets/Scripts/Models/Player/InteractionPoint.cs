@@ -4,7 +4,7 @@
 namespace FPS_Kotikov_D
 {
     /// <summary>
-    /// Class for rise to hands and move objects (objects whith IInteraction)
+    /// Class for rise and move objects (objects whith IInteraction)
     /// </summary>
     [RequireComponent(typeof(Rigidbody))]
     [RequireComponent(typeof(SpringJoint))]
@@ -16,7 +16,13 @@ namespace FPS_Kotikov_D
 
         const float LERPSMOUTH = 15f;
 
-        //[SerializeField, Range(2, 20)] private int _addForceMultiplier = 15;
+        [SerializeField, Range(1, 1000)]
+        public int SpringJointForceMyltipler = 15;
+        [SerializeField, Range(1, 50)]
+        public int ThrowForceMultipler = 15;
+        [HideInInspector]
+        public SpringJoint MySpringJoint;
+
         private IInteraction _objIi;
         private Rigidbody _objRb;
         private Transform _objTr;
@@ -41,7 +47,9 @@ namespace FPS_Kotikov_D
 
         private void OnEnable()
         {
-            Player.Interaction = gameObject.GetComponent<SpringJoint>();
+            MySpringJoint = gameObject.GetComponent<SpringJoint>();
+            if (MySpringJoint == null)
+                MySpringJoint = gameObject.AddComponent<SpringJoint>();
             var rB = gameObject.GetComponent<Rigidbody>();
             rB.isKinematic = true;
             rB.useGravity = false;
@@ -62,7 +70,6 @@ namespace FPS_Kotikov_D
                 _objRb.velocity = default;
                 _objTr = collider.transform;
                 _objTr.SetParent(gameObject.transform);
-                Player.Interaction.connectedBody = default;
             }
         }
 
@@ -94,7 +101,7 @@ namespace FPS_Kotikov_D
         {
             if (!_isCatched) return;
             ReleaseObject();
-            _objRb.AddForce(_objTr.forward * _objRb.mass * _objIi.ThrowForceMultipler, ForceMode.Impulse);
+            _objRb.AddForce(_objTr.forward * _objRb.mass * ThrowForceMultipler, ForceMode.Impulse);
         }
 
         public void ReleaseObject()
@@ -102,6 +109,7 @@ namespace FPS_Kotikov_D
             if (!_isCatched) return;
             _isCatched = false;
 
+            MySpringJoint.connectedBody = default;
             if (_objTr != null)
             {
                 _objTr.SetParent(default);

@@ -10,13 +10,17 @@ namespace FPS_Kotikov_D
 
         #region Fields
 
-        public static SpringJoint Interaction;
-
+        [HideInInspector]
+        public InteractionPoint Interaction;
+        [Header("Aim settings")]
         public float MaxViewDistance = 50.0f;
-        public float InteractionDistance = 5.0f;
         public float MinViewDistance = 5.0f;
+
+        [Header("Interaction settings")]
+        public float InteractionDistance = 5.0f;
         public LayerMask ViewLayers;
 
+        [Header("Player's health")]
         [SerializeField] private float _maxHp = 100.0f;
         [SerializeField] private float _currentHp = 40.0f;
         [SerializeField] private Transform _weaponPlace;
@@ -46,8 +50,18 @@ namespace FPS_Kotikov_D
         #endregion
 
 
-        #region Methodss
+        #region UnityMethods
 
+        protected void Start()
+        {
+            _weaponPlace = GetComponentInChildren<WeaponPosition>().transform;
+            Interaction = GetComponentInChildren<InteractionPoint>();
+        }
+
+        #endregion
+
+
+        #region Methods
 
         public bool Heal(float heal)
         {

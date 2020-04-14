@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using TMPro;
-using UnityEngine.UI;
 
 
 namespace FPS_Kotikov_D
@@ -11,30 +10,23 @@ namespace FPS_Kotikov_D
 
         #region Fields
 
-        private const string RELOADING = "RELOAD";
+        private const string RELOADING = "reload";
 
-        private TextMeshPro _ammunitionText;
-        private TextMeshPro _clipText;
-        private Image _screen;
+        private TextMeshProUGUI _textUI;
+        private string _clipText;
+        private string _ammoText;
 
         #endregion
 
 
         #region Properties
 
-        public string AmmunitionReload
-        {
-            set
-            {
-                _ammunitionText.text = value;
-            }
-        }
-
         public int AmmunitionText
         {
             set
             {
-                _ammunitionText.text = $"{value}";
+                _ammoText = value.ToString();
+                DrawUI();
             }
         }
 
@@ -42,7 +34,8 @@ namespace FPS_Kotikov_D
         {
             set
             {
-                _clipText.text = $"{value}";
+                _clipText = value.ToString();
+                DrawUI();
             }
         }
 
@@ -53,10 +46,7 @@ namespace FPS_Kotikov_D
 
         public void Awake()
         {
-            _ammunitionText = transform.Find("AmmunitionTextUI").GetComponent<TextMeshPro>();
-            _clipText = transform.Find("ClipsTextUI").GetComponent<TextMeshPro>();
-            _screen = gameObject.GetComponentInChildren<Image>();
-            SetActive(false);
+            _textUI = transform.GetComponentInChildren<TextMeshProUGUI>();
         }
 
         #endregion
@@ -64,40 +54,17 @@ namespace FPS_Kotikov_D
 
         #region Methods
 
-        public void SetActive(bool value)
+        public void DrawUIReload()
         {
-            _ammunitionText.gameObject.SetActive(value);
-            _clipText.gameObject.SetActive(value);
-            _screen.gameObject.SetActive(value);
+            if (_textUI == null) return;
+            _textUI.text = RELOADING;
         }
 
-        public void PlaceUI(Transform value)
+        private void DrawUI()
         {
-            gameObject.transform.position = value.position;
-            gameObject.transform.rotation = value.rotation;
+            _textUI.text = $"{_clipText}" + System.Environment.NewLine + $"{_ammoText}";
         }
 
-        public void DrawUIclips(int value)
-        {
-            _clipText.text = $"{value}";
-        }
-
-        public void DrawUIammunition(int value)
-        {
-            _ammunitionText.text = $"{value}";
-        }
-
-        public void DrawUIAmmunitionReload()
-        {
-            _ammunitionText.text = RELOADING;
-        }
-
-
-        public void PlaceWeaponUI(Transform place)
-        {
-            transform.position = place.position;
-            transform.rotation = place.rotation;
-        }
         #endregion
 
 

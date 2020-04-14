@@ -42,5 +42,7 @@ namespace FPS_Kotikov_D
             return dist <= distance;
         }
 
+
+
     }
 }

@@ -8,9 +8,6 @@
 
         public override void Fire()
         {
-            if (!CanFire) return;
-            if (IsReloading) return;
-
             if (CurrentAmmunition > 0)
             {
                 var temAmmunition = Instantiate(Ammunition, _bulletSpawn.position, _bulletSpawn.rotation);
@@ -25,9 +22,6 @@
                     if (CountClips > 0)
                         ReloadClip();
             }
-
-
-            
         }
 
         #endregion

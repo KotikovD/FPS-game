@@ -123,7 +123,7 @@ namespace FPS_Kotikov_D.Controller
 
 
 
-            if (CrossPlatformInputManager.GetButtonDown("Fire1"))
+            if (CrossPlatformInputManager.GetButton("Fire1"))
             {
                 if (_interaction.IsCatched)
                 {

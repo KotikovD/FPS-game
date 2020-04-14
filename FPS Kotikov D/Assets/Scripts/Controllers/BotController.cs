@@ -10,7 +10,7 @@ namespace FPS_Kotikov_D
 
         #region Fields
 
-        private readonly int _countBot = 10;
+        private readonly int _countBot = 0;
         private readonly HashSet<Bot> _getBotList = new HashSet<Bot>();
 
         #endregion
@@ -22,15 +22,16 @@ namespace FPS_Kotikov_D
         {
             for (var index = 0; index < _countBot; index++)
             {
+                //todo разных противников
                 var Bot = ServiceLocatorMonoBehaviour.GetService<Reference>().Bot;
                 var tempBot = Object.Instantiate(Bot,
                     Patrol.GenericPoint(ServiceLocatorMonoBehaviour.GetService<CharacterController>().transform),
                     Quaternion.identity);
 
-                tempBot.Name = $"{Bot.name}";
+                tempBot.name = $"{Bot.name}";
                 tempBot.Agent.avoidancePriority = index;
                 tempBot.Target = ServiceLocatorMonoBehaviour.GetService<CharacterController>().transform;
-                //todo разных противников
+                
                 AddBotToList(tempBot);
             }
         }

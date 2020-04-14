@@ -9,7 +9,11 @@ public class DiyngState : StateMachineBehaviour
     {
         var layer = animator.GetLayerIndex("Down");
         animator.SetLayerWeight(layer, 0f);
+        animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 0f);
+        animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 0f);
+        animator.SetLookAtWeight(0f);
         animator.applyRootMotion = true;
+
     }
 
     // OnStateUpdate is called before OnStateUpdate is called on any state inside this state machine

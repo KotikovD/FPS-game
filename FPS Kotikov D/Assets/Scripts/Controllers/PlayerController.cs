@@ -3,9 +3,9 @@
 
 namespace FPS_Kotikov_D.Controller
 {
-
     public class PlayerController : BaseController, IExecute, IInitialization
     {
+
         #region Fields
 
         const int TWO = 2;
@@ -19,11 +19,16 @@ namespace FPS_Kotikov_D.Controller
         private Vector2 _screenCenter;
         private Ray ray;
 
-
         #endregion
+
+
+        #region Properties
 
         public Vector3 HitPoint => _hitPoint;
         public Weapons[] Weapons => _player.Weapons;
+
+        #endregion
+
 
         #region Methods
 
@@ -34,7 +39,6 @@ namespace FPS_Kotikov_D.Controller
             _gameUI = Object.FindObjectOfType<GameUI>();
             _mainCamera = Camera.main;
             _screenCenter = new Vector2(Screen.width / TWO, Screen.height / TWO);
-
             On();
         }
 
@@ -42,33 +46,49 @@ namespace FPS_Kotikov_D.Controller
         {
             if (!IsActive) return;
             if (!_mainCamera) return;
-            //Debug.Log("AngularSpeed" + _player.Rigidbody.angularVelocity.magnitude);
-            _gameUI.PlayerHpText = _player.CurrentHp;
 
+            _gameUI.PlayerHpText = _player.CurrentHp;
             ray = _mainCamera.ScreenPointToRay(_screenCenter);
 
 #if UNITY_EDITOR           
             Debug.DrawRay(_mainCamera.transform.position, _mainCamera.transform.forward * _player.MaxViewDistance, Color.red);
 #endif
 
-            if (Physics.Raycast(ray, out var hit, _player.InteractionDistance, _player.ViewLayers))
+            if (Physics.Raycast(ray, out var hit, _player.MaxViewDistance, _player.ViewLayers))
             {
                 if (hit.distance < _player.MinViewDistance)
                     _hitPoint = _mainCamera.transform.position + ray.direction * _player.MinViewDistance;
                 else
                     _hitPoint = hit.point;
 
-                var objIS = hit.collider.gameObject.GetComponent<IShowMessage>();
-                if (objIS != null)
-                    objIS.ShowMessage();
-
-
-
-                if (TryUse)
+                if (hit.distance < _player.InteractionDistance)
                 {
-                    var objII = hit.collider.gameObject.GetComponent<IInteraction>();
-                    if (objII != null)
-                        objII.Interaction(_gameUI);
+                    var objIS = hit.collider.gameObject.GetComponent<IShowMessage>();
+                    if (objIS != null)
+                        objIS.ShowMessage();
+
+                    if (TryUse)
+                    {
+                        var objII = hit.collider.gameObject;
+                        var objChek = objII.GetComponent<IInteraction>();
+                        if (objChek == null) return;
+
+                        objChek.Interaction(_gameUI);
+
+                        var rb = objII.GetComponent<Rigidbody>();
+                        if (rb == null)
+                            rb = objII.AddComponent<Rigidbody>();
+
+                        var bc = objII.GetComponent<BoxCollider>();
+                        if (bc == null)
+                            bc = objII.AddComponent<BoxCollider>();
+
+                        rb.useGravity = false;
+
+                        _player.Interaction.MySpringJoint.connectedBody = rb;
+                        _player.Interaction.MySpringJoint.connectedAnchor = bc.center;
+                        _player.Interaction.MySpringJoint.spring = rb.mass * _player.Interaction.SpringJointForceMyltipler;
+                    }
                 }
             }
             else
@@ -77,9 +97,6 @@ namespace FPS_Kotikov_D.Controller
                 _hitPoint = _mainCamera.transform.position + ray.direction * _player.MaxViewDistance;
             }
         }
-
-        #endregion
-
 
         public Weapons SwitchActiveWeapon(Weapons enterWeapon, bool active)
         {
@@ -94,6 +111,8 @@ namespace FPS_Kotikov_D.Controller
             return default;
         }
 
-    }
+        #endregion
 
+
+    }
 }

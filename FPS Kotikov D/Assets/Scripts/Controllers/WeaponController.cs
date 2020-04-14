@@ -10,8 +10,6 @@ namespace FPS_Kotikov_D.Controller
         #region Fields
 
         private Weapons _weapon;
-        // weapon UI is a part of weapon and must placed on a barrel
-        private WeaponsUI _weaponUI; 
         private PlayerController _playerController;
 
         #endregion
@@ -21,8 +19,7 @@ namespace FPS_Kotikov_D.Controller
 
         public void Initialization()
         {
-            _weaponUI = Object.FindObjectOfType<WeaponsUI>();
-            _playerController  = ServiceLocator.Resolve<PlayerController>();
+           _playerController  = ServiceLocator.Resolve<PlayerController>();  
         }
 
         public void Execute()
@@ -36,18 +33,20 @@ namespace FPS_Kotikov_D.Controller
             Debug.DrawRay(_weapon.BulletSpawn.position, _weapon.BulletSpawn.forward *
                 GameObject.FindObjectOfType<Player>().MaxViewDistance, Color.blue);
 #endif
+            if (_weapon.WeaponUI != null)
+            {
+                _weapon.WeaponUI.ClipText = _weapon.CountClips;
 
-            _weaponUI.DrawUIclips(_weapon.CountClips);
-
-            if (_weapon.IsReloading)
-                _weaponUI.DrawUIAmmunitionReload();
-            else
-                _weaponUI.DrawUIammunition(_weapon.CurrentAmmunition);
+                if (_weapon.IsReloading)
+                    _weapon.WeaponUI.DrawUIReload();
+                else
+                    _weapon.WeaponUI.AmmunitionText = _weapon.CurrentAmmunition;
+            }
         }
 
         public void Fire()
         {
-            _weapon.Fire();
+            _weapon.AnimFire();
         }
 
         public override void On(params BaseObjectScene[] weapon)
@@ -60,11 +59,8 @@ namespace FPS_Kotikov_D.Controller
 
             base.On(_weapon);
 
+            _weapon.AddUIToWeapon();
             _weapon.Switch(true);
-            _weaponUI.transform.SetParent(_weapon.WeaponUIplace.transform);
-            _weaponUI.PlaceWeaponUI(_weapon.WeaponUIplace.transform);
-            _weaponUI.SetActive(true);
-
         }
 
         public override void Off()
@@ -72,7 +68,6 @@ namespace FPS_Kotikov_D.Controller
             if (!IsActive) return;
             base.Off();
             _weapon.Switch(false);
-            _weaponUI.SetActive(false);
         }
 
 
