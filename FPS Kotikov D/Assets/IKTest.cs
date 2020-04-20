@@ -33,7 +33,7 @@ namespace FPS_Kotikov_D
             if (Time.frameCount % 2 == 0)
             {
                 var posR = _rightLeg.TransformPoint(Vector3.zero);
-                Debug.DrawRay(posR, Vector3.down * _raysLenth, Color.red);
+              //  Debug.DrawRay(posR, Vector3.down * _raysLenth, Color.red);
                 if (Physics.Raycast(posR, Vector3.down, out var rightHit, _raysLenth, _rayLayerForFoots))
                 {
                     _rightLegRotation = Quaternion.FromToRotation(transform.up, rightHit.normal) * transform.rotation;
@@ -44,7 +44,7 @@ namespace FPS_Kotikov_D
             if (Time.frameCount % 2 != 0)
             {
                 var posL = _leftLeg.TransformPoint(Vector3.zero);
-                Debug.DrawRay(posL, Vector3.down * _raysLenth, Color.red);
+              //  Debug.DrawRay(posL, Vector3.down * _raysLenth, Color.red);
                 if (Physics.Raycast(posL, Vector3.down, out var leftHit, _raysLenth, _rayLayerForFoots))
                 {
                     _leftLegRotation = Quaternion.FromToRotation(transform.up, leftHit.normal) * transform.rotation;
@@ -60,7 +60,7 @@ namespace FPS_Kotikov_D
 
             var weightRightFoot = _animator.GetFloat("RightLegIK");
            var  weightLeftFoot = _animator.GetFloat("LeftLegIK");
-            Debug.Log("weightRightFoot " + weightRightFoot);
+          //  Debug.Log("weightRightFoot " + weightRightFoot);
 
             _animator.SetIKPositionWeight(AvatarIKGoal.RightFoot, weightRightFoot);
             _animator.SetIKPosition(AvatarIKGoal.RightFoot, _rightLegPosition);

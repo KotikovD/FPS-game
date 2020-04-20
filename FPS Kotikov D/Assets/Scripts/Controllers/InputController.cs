@@ -16,7 +16,7 @@ namespace FPS_Kotikov_D.Controller
         private bool _isActiveFlashlight = false;
         private bool _isActivePockePC = false;
         private bool _isActiveGameMenu = false;
-        private bool _areHandsBusy = false;
+       // private bool _areHandsBusy = false;
         private InteractionPoint _interaction;
 
         #endregion
@@ -33,6 +33,7 @@ namespace FPS_Kotikov_D.Controller
         public void Execute()
         {
             if (!IsActive) return;
+          //  _areHandsBusy = _interaction.IsCatched;
 
             if (Input.GetKeyDown(KeyCode.Escape))
             {
@@ -66,7 +67,7 @@ namespace FPS_Kotikov_D.Controller
 
             if (Input.GetKeyDown(KeyCode.Alpha3))
             {
-                if (_areHandsBusy) return;
+                if (_interaction.IsCatched) return;
                 _isActivePockePC = !_isActivePockePC;
                 if (_isActivePockePC)
                 {
@@ -87,14 +88,16 @@ namespace FPS_Kotikov_D.Controller
 
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
-                if (_areHandsBusy) return;
+                if (_interaction.IsCatched)
+                    _interaction.ReleaseObject();
                 SelectWeapon(0);
                 
             }
 
             if (Input.GetKeyDown(KeyCode.Alpha2))
             {
-                if (_areHandsBusy) return;
+                if (_interaction.IsCatched)
+                    _interaction.ReleaseObject();
                 SelectWeapon(1);
             }
 
@@ -102,17 +105,17 @@ namespace FPS_Kotikov_D.Controller
 
             if (Input.GetKeyDown(KeyCode.E))
             {
-                if (!_areHandsBusy)
+                if (_interaction.IsCatched)
                 {
-                    _areHandsBusy = true;
-                    ServiceLocator.Resolve<PlayerController>().TryUse = true;
-                    ServiceLocator.Resolve<WeaponController>().Off();
-                    ServiceLocator.Resolve<PocketPCController>().Off();
+                    _interaction.ReleaseObject();
                 }
                 else
                 {
-                    _interaction.ReleaseObject();
-                    _areHandsBusy = false;
+                    ServiceLocator.Resolve<PlayerController>().TryUse = true;
+                    //if (!_interaction.ObjCanCollect)
+                    //{
+                        
+                    //}
                 }
             }
 
@@ -128,7 +131,6 @@ namespace FPS_Kotikov_D.Controller
                 if (_interaction.IsCatched)
                 {
                     _interaction.ThrowObject();
-                    _areHandsBusy = false;
                 }
                 else
                 {
@@ -145,11 +147,10 @@ namespace FPS_Kotikov_D.Controller
         /// <summary>
         /// Выбор оружия
         /// </summary>
-        /// <param name="i">Номер оружия</param>
         private void SelectWeapon(int i)
         {
             ServiceLocator.Resolve<WeaponController>().Off();
-            Weapons tempWeapon = ServiceLocator.Resolve<PlayerController>().Weapons[i]; //todo инкапсулировать
+            Weapons tempWeapon = Player.Weapons[i]; //todo инкапсулировать
             if (tempWeapon != null)
             {
                var weapon =  ServiceLocator.Resolve<PlayerController>().SwitchActiveWeapon(tempWeapon, true);

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using FPS_Kotikov_D.Controller;
+using UnityEngine;
 
 
 namespace FPS_Kotikov_D
@@ -6,7 +7,6 @@ namespace FPS_Kotikov_D
     /// <summary>
     /// Class for rise and move objects (objects whith IInteraction)
     /// </summary>
-    [RequireComponent(typeof(Rigidbody))]
     [RequireComponent(typeof(SpringJoint))]
     public class InteractionPoint : BaseObjectScene
     {
@@ -24,20 +24,33 @@ namespace FPS_Kotikov_D
         public SpringJoint MySpringJoint;
 
         private IInteraction _objIi;
+        private ICanCollect _objCanCollect;
         private Rigidbody _objRb;
         private Transform _objTr;
         private BoxCollider _objColider;
-        private bool _isCatched = false;
+        private Vector3 _mainPlace;
+        private SphereCollider _myCollider;
 
         #endregion
 
 
         #region Properties
 
+        public bool ObjCanCollect
+        {
+            get
+            {
+                if (_objCanCollect != null && _objCanCollect.IsCanCollect)
+                    return true;
+                else
+                    return false;
+            }
+        }
+
         public bool IsCatched
         {
-            get { return _isCatched; }
-            private set { _isCatched = value; }
+            get;
+            private set;
         }
 
         #endregion
@@ -47,41 +60,59 @@ namespace FPS_Kotikov_D
 
         private void OnEnable()
         {
+            IsCatched = false;
             MySpringJoint = gameObject.GetComponent<SpringJoint>();
             if (MySpringJoint == null)
                 MySpringJoint = gameObject.AddComponent<SpringJoint>();
+
+            _myCollider = GetComponent<SphereCollider>();
+
             var rB = gameObject.GetComponent<Rigidbody>();
             rB.isKinematic = true;
             rB.useGravity = false;
+
+            _mainPlace = transform.localPosition;
         }
 
         private void OnTriggerStay(Collider collider)
         {
-            if (_isCatched) return;
+            if (IsCatched) return;
 
             _objIi = collider.GetComponent<IInteraction>();
 
             if (_objIi != null && _objIi.IsRaised)
             {
-                _isCatched = true;
+                IsCatched = true;
                 _objColider = collider.GetComponent<BoxCollider>();
                 _objColider.isTrigger = true;
-                _objRb = collider.GetComponent<Rigidbody>();
-                _objRb.velocity = default;
-                _objTr = collider.transform;
-                _objTr.SetParent(gameObject.transform);
+
+                _objCanCollect = collider.GetComponent<ICanCollect>();
+                if (ObjCanCollect)
+                {
+                    var player = transform.GetComponentInParent<CharacterController>();
+                    transform.position = player.transform.position;
+                    Debug.Log("SJ pos " + transform.position);
+                    Debug.Log("player pos " + player.transform.position);
+                }
+                else
+                {
+                    ServiceLocator.Resolve<WeaponController>().Off();
+                    ServiceLocator.Resolve<PocketPCController>().Off();
+                }
+                    _objRb = collider.GetComponent<Rigidbody>();
+                    _objRb.velocity = default;
+                    _objTr = collider.transform;
+                    _objTr.SetParent(gameObject.transform);
+                
             }
         }
 
         private void LateUpdate()
         {
-            if (!_isCatched) return;
+            if (!IsCatched) return;
             if (_objColider == null)
-            {
                 ReleaseObject();
-                return;
-            }
-                
+
             var objPos = transform.position - _objColider.center;
             var objRot = _objTr.rotation;
 
@@ -90,6 +121,13 @@ namespace FPS_Kotikov_D
 
             objRot = Quaternion.Lerp(objRot, transform.rotation, LERPSMOUTH * Time.deltaTime);
             _objTr.rotation = objRot;
+
+            if (ObjCanCollect)
+                if (_objRb.velocity == default)
+                {
+                    _objCanCollect.GetCollect();
+                    ReleaseObject();
+                }
         }
 
         #endregion
@@ -99,15 +137,21 @@ namespace FPS_Kotikov_D
 
         public void ThrowObject()
         {
-            if (!_isCatched) return;
+            if (!IsCatched) return;
             ReleaseObject();
             _objRb.AddForce(_objTr.forward * _objRb.mass * ThrowForceMultipler, ForceMode.Impulse);
         }
 
         public void ReleaseObject()
         {
-            if (!_isCatched) return;
-            _isCatched = false;
+            if (!IsCatched) return;
+            IsCatched = false;
+
+            if (transform.localPosition != _mainPlace)
+                transform.localPosition = _mainPlace;
+
+            if (!_myCollider.enabled)
+                _myCollider.enabled = true;
 
             MySpringJoint.connectedBody = default;
             if (_objTr != null)

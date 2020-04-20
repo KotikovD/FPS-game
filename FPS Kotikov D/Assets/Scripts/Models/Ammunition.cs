@@ -21,6 +21,21 @@ namespace FPS_Kotikov_D
         #endregion
 
 
+        #region Fields
+
+        public float BaseDamage
+        {
+            get => _baseDamage;
+        }
+
+        public float TimeToDestruct
+        {
+            get => _timeToDestruct;
+        }
+
+        #endregion
+
+
         #region UnityMethods
 
         protected override void Awake()
@@ -57,7 +72,7 @@ namespace FPS_Kotikov_D
         {
             Destroy(gameObject, timeToDestruct);
             CancelInvoke(nameof(LossOfDamage));
-            // Вернуть в пул
+            // TODO Вернуть в пул
         }
 
         #endregion

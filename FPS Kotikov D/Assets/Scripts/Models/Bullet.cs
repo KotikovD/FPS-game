@@ -9,6 +9,7 @@ namespace FPS_Kotikov_D
 
         [SerializeField] private int _maxRicochetTimes = 2;
         [SerializeField] private float _damageRicochetDivider = 2.0f;
+        [SerializeField] private float _lifeTime = 1f;
 
         private int _ricochetCounter = 0;
 
@@ -19,26 +20,12 @@ namespace FPS_Kotikov_D
 //#endif
 
             var tempObj = collision.gameObject.GetComponent<ISetDamage>();
-
             if (tempObj != null)
             {
                 tempObj.SetDamage(new InfoCollision(_currentDamage, collision.contacts[0],
                     collision.transform, Rigidbody.velocity));
-
-                if (collision.gameObject.GetComponent<Wall>() && _ricochetCounter < _maxRicochetTimes)
-                {
-//#if UNITY_EDITOR
-//                    Debug.DrawRay(collision.contacts[0].point, collision.contacts[0].normal, Color.red, 100);
-//#endif
-                    Rigidbody.velocity = Vector3.Reflect(Rigidbody.velocity.normalized, collision.contacts[0].normal) * Rigidbody.velocity.magnitude;
-                    _currentDamage /= _damageRicochetDivider;
-                    _ricochetCounter++;
-                }
-                else
-                    DestroyAmmunition();
+                    DestroyAmmunition(_lifeTime);
             }
-
-
         }
 
 

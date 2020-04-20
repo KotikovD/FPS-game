@@ -8,9 +8,11 @@ namespace FPS_Kotikov_D.Animation
 
         override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
-            var oldClip = animator.transform.GetComponentInChildren<AmmoClip>().transform;
-            var newClip = Resources.Load("EmptyRifleClip");
-            Instantiate(newClip, oldClip.position, oldClip.rotation);
+            var oldClip = animator.transform.GetComponentInChildren<AmmunitionClip>();
+            var newClip = Resources.Load<AmmunitionClip>("AmmunitionClips/BulletClip");
+            newClip.CountClips = 0;
+            Instantiate(newClip, oldClip.transform.position, oldClip.transform.rotation);
+            
         }
 
     }

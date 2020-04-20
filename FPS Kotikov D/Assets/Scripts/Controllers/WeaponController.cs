@@ -19,7 +19,7 @@ namespace FPS_Kotikov_D.Controller
 
         public void Initialization()
         {
-           _playerController  = ServiceLocator.Resolve<PlayerController>();  
+            _playerController = ServiceLocator.Resolve<PlayerController>();
         }
 
         public void Execute()
@@ -61,11 +61,14 @@ namespace FPS_Kotikov_D.Controller
 
             _weapon.AddUIToWeapon();
             _weapon.Switch(true);
+      
         }
 
         public override void Off()
         {
             if (!IsActive) return;
+            if (_weapon.IsReloading)
+                _weapon.ForceFinishReload();
             base.Off();
             _weapon.Switch(false);
         }

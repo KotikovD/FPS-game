@@ -10,31 +10,36 @@ namespace FPS_Kotikov_D
 
         #region Fields
 
-        [HideInInspector]
-        public InteractionPoint Interaction;
+        [HideInInspector] public InteractionPoint Interaction;
         [Header("Aim settings")]
         public float MaxViewDistance = 50.0f;
         public float MinViewDistance = 5.0f;
-
         [Header("Interaction settings")]
         public float InteractionDistance = 5.0f;
         public LayerMask ViewLayers;
 
         [Header("Player's health")]
-        [SerializeField] private float _maxHp = 100.0f;
-        [SerializeField] private float _currentHp = 40.0f;
+        [SerializeField] private static float _maxHp = 100.0f;
+        [SerializeField] private static float _currentHp = 40.0f;
         [SerializeField] private Transform _weaponPlace;
-        private Weapons[] _weapons;
+
+        private static Weapons[] _weapons;
 
         #endregion
 
 
         #region Properties
 
-        public float CurrentHp
+        public static float CurrentHp
         {
             get { return _currentHp; }
             set { _currentHp = value; }
+        }
+
+        public static float MaxHp
+        {
+            get { return _maxHp; }
+            set { _maxHp = value; }
         }
 
         public Transform WeaponPlace
@@ -42,7 +47,7 @@ namespace FPS_Kotikov_D
             get { return _weaponPlace; }
         }
 
-        public Weapons[] Weapons
+        public static Weapons[] Weapons
         {
             get { return _weapons; }
         }
@@ -63,7 +68,7 @@ namespace FPS_Kotikov_D
 
         #region Methods
 
-        public bool Heal(float heal)
+        public bool Heal(float heal = 0f)
         {
             if (_currentHp < _maxHp)
             {

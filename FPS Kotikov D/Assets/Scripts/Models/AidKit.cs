@@ -1,45 +1,69 @@
-﻿using UnityEngine;
+﻿using FPS_Kotikov_D.Controller;
+using UnityEngine;
 
 
 namespace FPS_Kotikov_D
 {
     [RequireComponent(typeof(Rigidbody))]
-    public class AidKit : BaseObjectScene, ISerializable, IInteraction, IShowMessage
+    [RequireComponent(typeof(BoxCollider))]
+    public class AidKit : PickUps, ISerializable, IInteraction, ICanCollect, IShowMessage
     {
 
+
         [SerializeField] private float _healValue = 25.0f;
+        [SerializeField] private string _nameForMessage;
+        private Player player;
 
 
-
-        private void OnCollisionEnter(Collision collision)
+        public bool IsCanCollect
         {
-            var tempObj = collision.gameObject.GetComponent<IHeal>();
-
-            if (tempObj == null) return;
-                if (tempObj.Heal(0))
-                {
-                    tempObj.Heal(_healValue);
-                    DestroyAidKit();
-                }
-            
+            get;
+            set;
         }
+
+        public void GetCollect()
+        {
+            if (IsCanCollect)
+                player = ServiceLocator.Resolve<PlayerController>().Player;
+
+            if (player.Heal())
+            {
+                player.Heal(_healValue);
+                DestroyAidKit();
+            }
+        }
+
 
         #region Methods
-
-        public void Interaction<T>(T value = null) where T : class
-        {
-            RaiseUp();
-        }
 
         private void DestroyAidKit()
         {
             Destroy(gameObject);
         }
 
+        public void Interaction<T>(T value = null) where T : class
+        {
+            IsCanCollect = _healValue > 0 ? true : false;
+            RaiseUp();
+            DeactiveIcon();
+        }
+
         public void ShowMessage()
         {
+            if (_nameForMessage != string.Empty)
+                gameObject.name = _nameForMessage;
+
+            if (IsCanCollect)
+                gameObject.name = $"{gameObject.name} {_healValue}";
             ShowName();
+            if (_hologramIcon != null && _healValue > 0 && !_isIconActive)
+            {
+                ActiveIcon();
+                StartCoroutine(DeactiveIcon(_iconShowTime));
+            }
         }
+
+
 
         #endregion
     }

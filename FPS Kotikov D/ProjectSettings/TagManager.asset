@@ -21,7 +21,7 @@ TagManager:
   - 
   - 
   - 
-  - 
+  - Player
   - 
   - 
   - 
@@ -30,7 +30,7 @@ TagManager:
   - 
   - 
   - 
-  - 
+  - PlayerBullets
   - 
   - 
   - Radar

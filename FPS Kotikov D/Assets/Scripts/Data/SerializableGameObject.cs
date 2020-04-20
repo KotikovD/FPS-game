@@ -30,7 +30,7 @@ namespace FPS_Kotikov_D.Data
 
         public SerializablePlayer(Player player)
         {
-            CurrentHp = player.CurrentHp;
+            CurrentHp = Player.CurrentHp;
 
             var guns = player.GetComponentsInChildren<Gun>(true);
             Debug.Log("guns coun " + guns.Length);

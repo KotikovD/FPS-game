@@ -1,6 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+
 
 namespace PolygonArsenal
 {
@@ -41,5 +40,10 @@ namespace PolygonArsenal
                 Destroy(m_Sound, life);
             }
         }
+
+        //private void OnTriggerEnter(Collider other)
+        //{
+        //    Destroy(gameObject);
+        //}
     }
 }
