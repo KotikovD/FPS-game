@@ -4,8 +4,8 @@
     {
         None = 0,
         Patrol = 1,
-        Inspection = 2,
-        Detected = 3,
+        PointInspection = 2,
+        PlayerDetected = 3,
         Died = 4
     }
 }

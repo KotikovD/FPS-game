@@ -91,8 +91,6 @@ namespace FPS_Kotikov_D
                 {
                     var player = transform.GetComponentInParent<CharacterController>();
                     transform.position = player.transform.position;
-                    Debug.Log("SJ pos " + transform.position);
-                    Debug.Log("player pos " + player.transform.position);
                 }
                 else
                 {

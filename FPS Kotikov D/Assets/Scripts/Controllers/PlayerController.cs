@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using DG.Tweening;
+using UnityEngine;
 
 
 namespace FPS_Kotikov_D.Controller
@@ -8,28 +9,26 @@ namespace FPS_Kotikov_D.Controller
 
         #region Fields
 
-        const int TWO = 2;
-
         public static RaycastHit Hit;
+
         public bool TryUse = false;
 
-        private Vector3 _hitPoint;
         private GameUI _gameUI;
-        private Player _player;
         private Camera _mainCamera;
         private Vector2 _screenCenter;
         private Ray ray;
         private CharacterController _charController;
-        private static float _moveMagnitude;
+        
 
         #endregion
 
 
         #region Properties
 
-        public Vector3 HitPoint => _hitPoint;
-        public Player Player => _player;
-        public static float MoveMagnitude => _moveMagnitude;
+        public static float MoveMagnitude { get; private set; }
+
+        public Vector3 HitPoint { get; private set; }
+        public Player Player { get; private set; }
 
         #endregion
 
@@ -38,12 +37,13 @@ namespace FPS_Kotikov_D.Controller
 
         public void Initialization()
         {
-            _player = Object.FindObjectOfType<Player>();
-            _charController = _player.GetComponent<CharacterController>();
-            _player.AddWeapons();
+            Player = Object.FindObjectOfType<Player>();
+            PlayerPresenter.Player = Player;
+            _charController = Player.GetComponent<CharacterController>();
+            Player.AddWeapons();
             _gameUI = Object.FindObjectOfType<GameUI>();
             _mainCamera = Camera.main;
-            _screenCenter = new Vector2(Screen.width / TWO, Screen.height / TWO);
+            _screenCenter = new Vector2(Screen.width / 2, Screen.height / 2);
             On();
         }
 
@@ -51,22 +51,22 @@ namespace FPS_Kotikov_D.Controller
         {
             if (!IsActive) return;
             if (!_mainCamera) return;
-            _moveMagnitude = _charController.velocity.magnitude;
-            _gameUI.PlayerHpText = Player.CurrentHp;
+            MoveMagnitude = _charController.velocity.magnitude;
+            _gameUI.PlayerHpText = FPS_Kotikov_D.Player.CurrentHp;
             ray = _mainCamera.ScreenPointToRay(_screenCenter);
 
 #if UNITY_EDITOR           
-            Debug.DrawRay(_mainCamera.transform.position, _mainCamera.transform.forward * _player.MaxViewDistance, Color.red);
+            Debug.DrawRay(_mainCamera.transform.position, _mainCamera.transform.forward * Player.MaxViewDistance, Color.red);
 #endif
 
-            if (Physics.Raycast(ray, out Hit, _player.MaxViewDistance, _player.ViewLayers))
+            if (Physics.Raycast(ray, out Hit, Player.MaxViewDistance, Player.ViewLayers))
             {
-                if (Hit.distance < _player.MinViewDistance)
-                    _hitPoint = _mainCamera.transform.position + ray.direction * _player.MinViewDistance;
+                if (Hit.distance < Player.MinViewDistance)
+                    HitPoint = _mainCamera.transform.position + ray.direction * Player.MinViewDistance;
                 else
-                    _hitPoint = Hit.point;
+                    HitPoint = Hit.point;
 
-                if (Hit.distance < _player.InteractionDistance)
+                if (Hit.distance < Player.InteractionDistance)
                 {
                     var objIS = Hit.collider.gameObject.GetComponent<IShowMessage>();
                     if (objIS != null)
@@ -88,13 +88,16 @@ namespace FPS_Kotikov_D.Controller
             else
             {
                 GameUI.SetMessageBox = string.Empty;
-                _hitPoint = _mainCamera.transform.position + ray.direction * _player.MaxViewDistance;
+                HitPoint = _mainCamera.transform.position + ray.direction * Player.MaxViewDistance;
             }
         }
 
+        /// <summary>
+        /// Set avalibale for player weapons pool
+        /// </summary>
         public Weapons SwitchActiveWeapon(Weapons enterWeapon, bool active)
         {
-            foreach (var weapon in Player.Weapons)
+            foreach (var weapon in FPS_Kotikov_D.Player.Weapons)
             {
                 if (!weapon.Equals(enterWeapon)) continue;
 
@@ -116,11 +119,12 @@ namespace FPS_Kotikov_D.Controller
 
             rb.useGravity = false;
 
-            _player.Interaction.MySpringJoint.connectedBody = rb;
-            _player.Interaction.MySpringJoint.connectedAnchor = bc.center;
-            _player.Interaction.MySpringJoint.spring = rb.mass * _player.Interaction.SpringJointForceMyltipler;
+            Player.Interaction.MySpringJoint.connectedBody = rb;
+            Player.Interaction.MySpringJoint.connectedAnchor = bc.center;
+            Player.Interaction.MySpringJoint.spring = rb.mass * Player.Interaction.SpringJointForceMyltipler;
         }
 
+       
         #endregion
 
 

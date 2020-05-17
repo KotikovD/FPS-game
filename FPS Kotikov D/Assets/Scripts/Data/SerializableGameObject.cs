@@ -8,12 +8,10 @@ namespace FPS_Kotikov_D.Data
     public struct SerializableGameObject
     {
         public string Name;
-        //public float PlayerHp;
         public SerializableVector3 Pos;
         public SerializableQuaternion Rot;
         public SerializableVector3 Scale;
         public SerializablePlayer SPlayer;
-        //public Component[] Components;
         public bool IsEnable;
 
         public override string ToString()

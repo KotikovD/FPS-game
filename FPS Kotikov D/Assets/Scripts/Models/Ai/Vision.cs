@@ -1,47 +1,54 @@
 ﻿using UnityEngine;
 
+
 namespace FPS_Kotikov_D
 {
     [System.Serializable]
     public sealed class Vision
     {
+
+
+        #region Fileds
+
         public float ActiveDistance = 10.0f;
         public float ActiveAngle = 35.0f;
-        public float LostPlayerDistance = 5.0f;
 
-        public bool VisionPlayer(Transform player, Transform target)
+        #endregion
+
+
+        #region Methods
+
+        public bool CanBotSeePlayer(Transform player, Transform target)
         {
-            return Distance(player, target, ActiveDistance) && Angle(player, target) && !CheckBlocked(player, target);
+            return CheckVisionDistance(player, target)
+                && CheckSeeAngle(player, target)
+                && CheckObstacles(player, target);
         }
 
-        public bool LostPlayer(Transform player, Transform target)
+        public bool BotLostPlayer(Transform player, Transform target)
         {
-            if (CheckBlocked(player, target))
-                return true;
-            if (Distance(player, target, LostPlayerDistance) && CheckBlocked(player, target))
-                return true;
-            return false;
+            return !CheckVisionDistance(player, target)
+                || !CheckObstacles(player, target);
         }
 
-        private bool CheckBlocked(Transform player, Transform target)
+        private bool CheckObstacles(Transform player, Transform target)
         {
-            if (!Physics.Linecast(player.position, target.position, out var hit))
-                return true;
-            return hit.transform != target;
+            return Physics.Linecast(player.position, target.position);
         }
 
-        private bool Angle(Transform player, Transform target)
+        private bool CheckSeeAngle(Transform player, Transform target)
         {
             var angle = Vector3.Angle(player.forward, target.position - player.position);
-            return angle <= ActiveAngle;
+            return angle < ActiveAngle;
         }
 
-        private bool Distance(Transform player, Transform target, float distance)
+        private bool CheckVisionDistance(Transform player, Transform target)
         {
-            var dist = Vector3.Distance(player.position, target.position); //todo оптимизация
-            return dist <= distance;
+            var currentDistance = Vector3.Distance(player.position, target.position);
+            return currentDistance < ActiveDistance;
         }
 
+        #endregion
 
 
     }

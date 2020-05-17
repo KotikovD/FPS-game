@@ -1,4 +1,4 @@
-﻿using FPS_Kotikov_D.Controller;
+﻿using System.Collections;
 using UnityEngine;
 
 
@@ -7,36 +7,42 @@ namespace FPS_Kotikov_D
     public sealed class Gun : Weapons
     {
 
-        private RaycastHit _hit;
-
 
         #region Methods
 
-        public override void Fire()
+        public override void Fire(Vector3 hitPoint)
         {
+            if (!CanFire) return;
+            if (IsReloading) return;
+            if (CurrentAmmunition == 0 && Data.CurrentCountClip > 0)
+                ReloadClip();
+
+            base.Fire(hitPoint);
+
             if (CurrentAmmunition > 0)
             {
-                _hit = PlayerController.Hit;
-                var projectorDelay = _hit.distance / _bulletSpeed;
+                var projectorDelay = Vector3.Distance(transform.position, hitPoint) / Data.BulletSpeed;
 
-                var partical = Instantiate(ParticalShoot, _bulletSpawn.position, _bulletSpawn.rotation);
+                var partical = Instantiate(Data.ParticalShoot, _bulletSpawn.position, _bulletSpawn.rotation);
                 var particalRB = partical.GetComponent<Rigidbody>();
-                particalRB.AddForce(_bulletSpawn.forward * _bulletSpeed);
+                particalRB.AddForce(_bulletSpawn.forward * Data.BulletSpeed);
                 Destroy(partical, Ammunition.TimeToDestruct);
 
                 CanFire = false;
-                Invoke(nameof(PlaceBullet), projectorDelay);
-                Invoke(nameof(ReadyShoot), _rechargeTime);
+                StartCoroutine(PlaceBullet(hitPoint, projectorDelay));
+                Invoke(nameof(ReadyShoot), Data.RechargeTime);
 
                 CurrentAmmunition--;
-                if (CurrentAmmunition == 0)
-                    ReloadClip();
+                
             }
         }
 
-        private void PlaceBullet()
+        private IEnumerator PlaceBullet(Vector3 hitPoint, float projectorDelay)
         {
-            Instantiate(Ammunition, _hit.point, _bulletSpawn.rotation);
+            yield return new WaitForSeconds(projectorDelay);
+            var ammo = Instantiate(Ammunition, hitPoint, _bulletSpawn.rotation);
+            ammo.Direction = Vector3.Normalize(hitPoint - transform.position);
+            StopCoroutine(nameof(PlaceBullet));
         }
 
         #endregion

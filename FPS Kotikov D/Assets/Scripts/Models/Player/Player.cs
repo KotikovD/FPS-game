@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using DG.Tweening;
+using UnityEngine;
 
 
 namespace FPS_Kotikov_D
@@ -17,13 +18,13 @@ namespace FPS_Kotikov_D
         [Header("Interaction settings")]
         public float InteractionDistance = 5.0f;
         public LayerMask ViewLayers;
-
+        
         [Header("Player's health")]
         [SerializeField] private static float _maxHp = 100.0f;
         [SerializeField] private static float _currentHp = 40.0f;
-        [SerializeField] private Transform _weaponPlace;
-
-        private static Weapons[] _weapons;
+        [Header("Add for camera shake effect (optional)")]
+        [SerializeField] private CameraShakeSO _shaker;
+        private Transform _camera;
 
         #endregion
 
@@ -42,15 +43,9 @@ namespace FPS_Kotikov_D
             set { _maxHp = value; }
         }
 
-        public Transform WeaponPlace
-        {
-            get { return _weaponPlace; }
-        }
-
-        public static Weapons[] Weapons
-        {
-            get { return _weapons; }
-        }
+        public Transform WeaponPlace { get; private set; }
+      
+        public static Weapons[] Weapons { get; private set; }
 
         #endregion
 
@@ -59,9 +54,20 @@ namespace FPS_Kotikov_D
 
         protected void Start()
         {
-            _weaponPlace = GetComponentInChildren<WeaponPosition>().transform;
+            WeaponPlace = GetComponentInChildren<WeaponPosition>().transform;
             Interaction = GetComponentInChildren<InteractionPoint>();
+            _camera = Camera.main.transform;
         }
+
+        //private void OnEnable()
+        //{
+        //    ServiceLocator.Resolve<WeaponController>().Shoot += CameraShake;
+        //}
+
+        //private void OnDisable()
+        //{
+        //    ServiceLocator.Resolve<WeaponController>().Shoot -= CameraShake;
+        //}
 
         #endregion
 
@@ -82,19 +88,26 @@ namespace FPS_Kotikov_D
 
         public void AddWeapons()
         {
-            _weapons = new Weapons[ServiceLocator.Resolve<Inventory>().Length];
+            Weapons = new Weapons[ServiceLocator.Resolve<Inventory>().Length];
             var weapons = ServiceLocator.Resolve<Inventory>().Weapons;
             for (int i = 0; i < weapons.Length; i++)
             {
                 if (weapons[i] != null)
                 {
-                    var localWeapon = Instantiate(weapons[i], _weaponPlace.position, _weaponPlace.transform.rotation);
-                    localWeapon.transform.SetParent(_weaponPlace.transform);
-                    _weapons[i] = localWeapon;
+                    var localWeapon = Instantiate(weapons[i], WeaponPlace.position, WeaponPlace.transform.rotation);
+                    localWeapon.transform.SetParent(WeaponPlace.transform);
+                    Weapons[i] = localWeapon;
                 }
             }
         }
 
+        public void CameraShake()
+        {
+            if (_shaker == null) return;
+            Tweener tweener = DOTween.Shake
+                (() => _camera.transform.localPosition, pos => _camera.transform.localPosition = pos,
+                _shaker.Duration, _shaker.Strength, _shaker.Vibrato, _shaker.Randomness);
+        }
 
         #endregion
 

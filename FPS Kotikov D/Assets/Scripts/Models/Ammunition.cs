@@ -11,27 +11,20 @@ namespace FPS_Kotikov_D
         #region Fields
 
         public AmmunitionType Type = AmmunitionType.Bullet;
+        [HideInInspector] public Vector3 Direction;
 
-        [SerializeField] private float _timeToDestruct = 10f;
-        [SerializeField] private float _baseDamage = 10f;
-        [SerializeField] private float _lossOfDamageAtTime = 0.2f;
         protected float _currentDamage;
-
+        [SerializeField] protected float _timeToDestruct = 1f;
+        [SerializeField] protected float _addForcePower = 5f;
+        [SerializeField] private float _baseDamage = 10f;
 
         #endregion
 
 
         #region Fields
 
-        public float BaseDamage
-        {
-            get => _baseDamage;
-        }
-
-        public float TimeToDestruct
-        {
-            get => _timeToDestruct;
-        }
+        public float BaseDamage => _baseDamage;
+        public float TimeToDestruct => _timeToDestruct;
 
         #endregion
 
@@ -47,7 +40,6 @@ namespace FPS_Kotikov_D
         private void Start()
         {
             Destroy(InstanceObject, _timeToDestruct);
-            InvokeRepeating(nameof(LossOfDamage), 0, 1);
         }
 
         #endregion
@@ -55,23 +47,12 @@ namespace FPS_Kotikov_D
 
         #region Methods
 
-        public void AddForce(Vector3 dir)
-        {
-            if (!Rigidbody) return;
-            Rigidbody.AddForce(dir);
-        }
 
-        private void LossOfDamage()
-        {
-            _currentDamage -= _lossOfDamageAtTime;
-            if (_currentDamage < 0)
-                DestroyAmmunition();
-        }
+
 
         protected void DestroyAmmunition(float timeToDestruct = 0)
         {
             Destroy(gameObject, timeToDestruct);
-            CancelInvoke(nameof(LossOfDamage));
             // TODO Вернуть в пул
         }
 

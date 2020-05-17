@@ -10,16 +10,27 @@ namespace FPS_Kotikov_D
     {
 
 
+        #region Fields
+
         [SerializeField] private float _healValue = 25.0f;
         [SerializeField] private string _nameForMessage;
         private Player player;
 
+        #endregion
+
+
+        #region Properties
 
         public bool IsCanCollect
         {
             get;
             set;
         }
+
+        #endregion
+
+
+        #region Methods
 
         public void GetCollect()
         {
@@ -32,9 +43,6 @@ namespace FPS_Kotikov_D
                 DestroyAidKit();
             }
         }
-
-
-        #region Methods
 
         private void DestroyAidKit()
         {
@@ -63,8 +71,8 @@ namespace FPS_Kotikov_D
             }
         }
 
-
-
         #endregion
+
+
     }
 }

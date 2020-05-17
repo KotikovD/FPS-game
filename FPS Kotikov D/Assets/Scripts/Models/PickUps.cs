@@ -11,7 +11,6 @@ namespace FPS_Kotikov_D
 
         #region Fields
 
-        
         protected GameObject _iconInstanse;
         protected bool _isIconActive = false;
         [Header("Set Icon (optional)")]
@@ -23,7 +22,7 @@ namespace FPS_Kotikov_D
         #endregion
 
 
-        #region Metodths
+        #region Methods
 
         protected void ActiveIcon()
         {

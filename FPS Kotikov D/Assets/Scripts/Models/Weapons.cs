@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using FPS_Kotikov_D.Controller;
-using DG.Tweening;
-
+using System;
 
 namespace FPS_Kotikov_D
 {
@@ -14,59 +13,34 @@ namespace FPS_Kotikov_D
 
         private const float FIXDELAY = 2.0f;
 
-        [HideInInspector]
-        public Clip Clip;
-        [HideInInspector]
-        public bool IsReloading = false;
-        [HideInInspector]
-        public bool CanFire = true;
-        [Header("Main settings")]
-        public GunType GunType;
-        public Ammunition Ammunition;
+        public event Action Shoot;
+        [HideInInspector] public WeaponsUI WeaponUI;
+        [HideInInspector] public Clip Clip;
+        [HideInInspector] public bool IsReloading = false;
+        [HideInInspector] public bool CanFire = true;
+        public WeaponData Data;
 
         protected Transform _bulletSpawn;
         protected Animator _animator;
-        [SerializeField, Tooltip("Decoration effect for shooting")]
-        protected GameObject ParticalShoot;
-        [SerializeField]
-        protected float _bulletSpeed = 100f;
-        [SerializeField, Tooltip("Delay between shoots")]
-        protected float _rechargeTime = 0.2f;
-        [SerializeField, Tooltip("Reload delay")]
-        protected float _reloadTime = 3f;
-        [SerializeField, Tooltip("Start clips count")]
-        protected int _countClip = 4;
-        [SerializeField, Tooltip("Max count ammo in one clip")]
-        private int _maxCountAmmunition = 10;
-        [SerializeField]
-        private int _maxCountClips = 10;
-        [SerializeField, Tooltip("This weapon will avaliable to use for player if check it")]
-        private bool _availableForPlayer = false;
-        [Header("Camera shake animation (DOTweener)")]
-        [SerializeField] private float _duration;
-        [SerializeField, Range(0, 10)] private float _strength;
-        [SerializeField] private int _vibrato;
-        [SerializeField, Range (0f, 90f)] private float _randomness;
-        private Transform _camera;
-        private WeaponsUI _weaponUI;
+
         private Queue<Clip> _clips = new Queue<Clip>();
-        private Transform _leftHandPosition;
 
         #endregion
 
 
         #region Properties
 
-        public WeaponsUI WeaponUI
-        {
-            get { return _weaponUI; }
-            set { _weaponUI = value; }
-        }
+        public int MaxCountAmmunition => Data.MaxCountAmmunition;
+        public int MaxCountClips => Data.MaxCountClips;
+        public Transform BulletSpawn => _bulletSpawn;
+        public GunType GunType => Data.GunType;
+        public Ammunition Ammunition => Data.Ammunition;
+        public Transform LeftHandPosition { get; private set; }
 
         public bool AvailableForPlayer
         {
-            get { return _availableForPlayer; }
-            set { _availableForPlayer = value; }
+            get { return Data.IsAvailableForPlayer; }
+            set { Data.IsAvailableForPlayer = value; }
         }
 
         public int CountClips
@@ -75,7 +49,7 @@ namespace FPS_Kotikov_D
             set
             {
                 for (int i = 0; i < value; i++)
-                    AddClip(new Clip { CountAmmunition = _maxCountAmmunition });
+                    AddClip(new Clip { CountAmmunition = Data.MaxCountAmmunition });
             }
         }
 
@@ -85,24 +59,6 @@ namespace FPS_Kotikov_D
             set { Clip.CountAmmunition = value; }
         }
 
-        public int MaxCountAmmunition
-        {
-            get { return _maxCountAmmunition; }
-        }
-
-        public int MaxCountClips
-        {
-            get { return _maxCountClips; }
-        }
-
-        public Transform BulletSpawn => _bulletSpawn;
-
-        public Transform LeftHandPosition
-        {
-            get { return _leftHandPosition; }
-            private set { _leftHandPosition = value; }
-        }
-
         #endregion
 
 
@@ -110,16 +66,15 @@ namespace FPS_Kotikov_D
 
         private void Start()
         {
-            _leftHandPosition = transform.Find("LeftHandPosition").transform;
+            LeftHandPosition = transform.Find("LeftHandPosition").transform;
             _bulletSpawn = transform.Find("BulletSpawn").transform;
-            _camera = Camera.main.transform;
-
-            if (_countClip > 0)
-                for (var i = 0; i <= _countClip; i++)
+            if (Data.CurrentCountClip > 0)
+            {
+                for (var i = 0; i <= Data.CurrentCountClip; i++)
                 {
-                    AddClip(new Clip { CountAmmunition = _maxCountAmmunition });
+                    AddClip(new Clip { CountAmmunition = Data.MaxCountAmmunition });
                 }
-
+            }
             ReloadClip();
         }
 
@@ -128,25 +83,28 @@ namespace FPS_Kotikov_D
 
         #region Metodths
 
-        public abstract void Fire();
+        public virtual void Fire(Vector3 hitPoint)
+        {
+            _animator.SetBool("Shoot", true);
+            if (Shoot != null)
+                Shoot.Invoke();
+        }
 
         public void AddUIToWeapon()
         {
-            _weaponUI = transform.GetComponentInChildren<WeaponsUI>();
+            WeaponUI = transform.GetComponentInChildren<WeaponsUI>();
         }
 
-        public void AnimFire()
-        {
-            if (!CanFire) return;
-            if (IsReloading) return;
-            _animator.SetBool("Shoot", true);
+        //public void AnimFire()
+        //{
+        //    if (!CanFire) return;
+        //    if (IsReloading) return;
+        //    _animator.SetBool("Shoot", true);
 
-
-
-            Tweener tweener = DOTween.Shake
-                (() => _camera.localPosition, pos => _camera.localPosition = pos,
-                _duration, _strength, _vibrato, _randomness);
-        }
+        //    Tweener tweener = DOTween.Shake
+        //        (() => _camera.localPosition, pos => _camera.localPosition = pos,
+        //        _duration, _strength, _vibrato, _randomness);
+        //}
 
         public void Switch(bool value)
         {
@@ -172,7 +130,7 @@ namespace FPS_Kotikov_D
 
         public void AddClip(Clip clip)
         {
-            if (CountClips >= _maxCountClips)
+            if (CountClips >= Data.MaxCountClips)
                 return;
             _clips.Enqueue(clip);
         }
@@ -194,7 +152,7 @@ namespace FPS_Kotikov_D
             else if (!IsReloading && CountClips > 0)
             {
                 IsReloading = true;
-                Invoke(nameof(ReloadIsFinish), _reloadTime);
+                Invoke(nameof(ReloadIsFinish), Data.ReloadTime);
             }
         }
 
@@ -206,19 +164,22 @@ namespace FPS_Kotikov_D
                 Invoke(nameof(ReloadIsFinish), 1f);
                 _animator.SetBool("IsReloading", IsReloading);
                 _animator.SetBool("HaveNextClip", true);
+                _animator.SetBool("NoAmmo", false);
             }
             else if (CountClips == 0 && CurrentAmmunition == 0)
             {
                 IsReloading = true;
                 _animator.SetBool("IsReloading", IsReloading);
                 _animator.SetBool("HaveNextClip", false);
+                _animator.SetBool("NoAmmo", true);
             }
             else if (!IsReloading && CountClips > 0)
             {
                 IsReloading = true;
                 _animator.SetBool("HaveNextClip", true);
+                _animator.SetBool("NoAmmo", false);
                 _animator.SetBool("IsReloading", IsReloading);
-                Invoke(nameof(ReloadIsFinish), _reloadTime);
+                Invoke(nameof(ReloadIsFinish), Data.ReloadTime);
             }
         }
 
@@ -250,17 +211,19 @@ namespace FPS_Kotikov_D
         {
             _animator = GetComponent<Animator>();
 
-            var delay = _reloadTime;
+            var delay = Data.ReloadTime;
             if (delay - FIXDELAY > 0)
                 delay = 1 / (delay - FIXDELAY);
             _animator.SetFloat("ReloadDelay", delay);
 
             // TODO remove magic from here
-            var reCharge = _rechargeTime;
+            var reCharge = Data.RechargeTime;
             if (reCharge > 0)
                 reCharge = reCharge / 60 * 100 * 100;
             _animator.SetFloat("ShootRecharge", reCharge);
         }
+
+
 
         #endregion
 

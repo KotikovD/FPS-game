@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
-using FPS_Kotikov_D.Data;
+
 
 namespace FPS_Kotikov_D.Controller
 {

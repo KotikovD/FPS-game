@@ -47,11 +47,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Type: 2
-  _timeToDestruct: 10
+  Direction: {x: 0, y: 0, z: 0}
+  _timeToDestruct: 1
+  _addForcePower: 10
   _baseDamage: 10
-  _lossOfDamageAtTime: 1
-  _maxRicochetTimes: 2
-  _damageRicochetDivider: 2
 --- !u!135 &3573248384769797018
 SphereCollider:
   m_ObjectHideFlags: 0

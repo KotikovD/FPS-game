@@ -9,9 +9,11 @@ namespace FPS_Kotikov_D.Controller
 
         #region Fields
 
+        
+
         private Weapons _weapon;
         private PlayerController _playerController;
-
+        
         #endregion
 
 
@@ -46,7 +48,8 @@ namespace FPS_Kotikov_D.Controller
 
         public void Fire()
         {
-            _weapon.AnimFire();
+            
+            _weapon.Fire(PlayerController.Hit.point);
         }
 
         public override void On(params BaseObjectScene[] weapon)
@@ -61,7 +64,8 @@ namespace FPS_Kotikov_D.Controller
 
             _weapon.AddUIToWeapon();
             _weapon.Switch(true);
-      
+            _weapon.Shoot += _playerController.Player.CameraShake;
+
         }
 
         public override void Off()
@@ -69,8 +73,10 @@ namespace FPS_Kotikov_D.Controller
             if (!IsActive) return;
             if (_weapon.IsReloading)
                 _weapon.ForceFinishReload();
+            _weapon.Shoot -= _playerController.Player.CameraShake;
             base.Off();
             _weapon.Switch(false);
+            
         }
 
 
