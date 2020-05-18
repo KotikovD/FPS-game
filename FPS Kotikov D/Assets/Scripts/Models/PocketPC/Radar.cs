@@ -49,12 +49,12 @@ namespace FPS_Kotikov_D
 
             foreach (var obj in dict)
             {
-                var radarItem = new GameObject { name = "RadarItem" };
+                var radarItem = new GameObject { name = StringKeeper.RadarItem };
                 radarItem.transform.position = obj.Key.transform.position;
                 radarItem.transform.up = obj.Key.transform.forward;
                 radarItem.transform.forward = obj.Key.transform.up;
                 radarItem.transform.SetParent(obj.Key.transform);
-                radarItem.layer = LayerMask.NameToLayer("Radar");
+                radarItem.layer = LayerMask.NameToLayer(StringKeeper.RadarLayer);
                 var itemSprite = radarItem.AddComponent<SpriteRenderer>();
 
                 if (obj.Value.Equals(player.GetType()))

@@ -66,8 +66,8 @@ namespace FPS_Kotikov_D
 
         private void Start()
         {
-            LeftHandPosition = transform.Find("LeftHandPosition").transform;
-            _bulletSpawn = transform.Find("BulletSpawn").transform;
+            LeftHandPosition = transform.Find(StringKeeper.LeftHandPosition).transform;
+            _bulletSpawn = transform.Find(StringKeeper.BulletSpawn).transform;
             if (Data.CurrentCountClip > 0)
             {
                 for (var i = 0; i <= Data.CurrentCountClip; i++)

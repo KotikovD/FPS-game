@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+
 namespace FPS_Kotikov_D
 {
     public sealed class Inventory : BaseController, IInitialization
@@ -34,7 +35,7 @@ namespace FPS_Kotikov_D
 
         public void Initialization()
         {
-            _weapons = Resources.LoadAll<Weapons>("Guns");
+            _weapons = Resources.LoadAll<Weapons>(StringKeeper.GunsClass);
             foreach (var weapon in Weapons)
             {
                 weapon.enabled = false;

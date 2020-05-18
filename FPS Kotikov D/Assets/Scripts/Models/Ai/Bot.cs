@@ -115,7 +115,7 @@ namespace FPS_Kotikov_D
             var randWeaponNumber = ServiceLocator.Resolve<Inventory>().Length;
             _weapon = ServiceLocator.Resolve<Inventory>().Weapons[Random.Range(0, randWeaponNumber)];
             var localWeapon = Instantiate(_weapon, transform.position, transform.rotation);
-            PlaceAndSetWeapons(transform, "WeaponPlace", localWeapon.transform);
+            PlaceAndSetWeapons(transform, StringKeeper.WeaponPlace, localWeapon.transform);
             _weapon = localWeapon;
             _weapon.Switch(true);
 
