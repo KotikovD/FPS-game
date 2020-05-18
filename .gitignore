@@ -1,8 +1,26 @@
-[Aa]ssets/
-[Pp]rojectSettings/
-[Pp]ackages/
-![Aa]ssets/[Ss]cripts/
-
+Library/
+Temp/
+Obj/
+Build/
+Builds/
+Logs/
+Plugins/
+SampleScene?/
+MemoryCaptures/
+DownloadAssets/
+Resources/
+Scenes/
+Animations/
+Standard Assets/
+TextMesh Pro/
+DoTween/
+DoTween Examples/
+Demigiant/
+ProjectSettings/
+Packages/
+ProjectSettings/
+Packages/
+DataSave/
 
 # Visual Studio cache directory
 .vs/
@@ -54,4 +72,5 @@ crashlytics-build.properties
 *.unity
 *.prefab
 *.json
-.DS_Store
+*.DS_Store
+*.blob
