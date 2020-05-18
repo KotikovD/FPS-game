@@ -1,4 +1,6 @@
-﻿namespace FPS_Kotikov_D.Controller
+﻿using UnityEngine;
+
+namespace FPS_Kotikov_D.Controller
 {
     public sealed class PocketPCController : BaseController, IExecute, IInitialization
     {
@@ -15,7 +17,7 @@
 
         public void Initialization()
         {
-            _pocketPC = UnityEngine.Object.FindObjectOfType<PocketPC>();
+            _pocketPC = Object.FindObjectOfType<PocketPC>();
            _pocketPC.Switch(false);
         }
 

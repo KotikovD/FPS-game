@@ -24,11 +24,18 @@ namespace FPS_Kotikov_D
         protected Rigidbody _rigidbody;
         protected string _name;
         protected bool _isVisible;
+        protected bool _isRaised = false;
 
         #endregion
 
 
         #region Properties
+
+        public bool IsRaised
+        {
+            get => _isRaised;
+            set { _isRaised = value; }
+        }
 
         public string Name
         {
@@ -173,24 +180,20 @@ namespace FPS_Kotikov_D
                 _material = GetComponent<Renderer>().material;
         }
 
+        #endregion
+
+
+        #region Methods
+
         public void SaveData()
         {
             if (GetComponent<ISerializable>() != null)
                 Object.FindObjectOfType<SerializableObjects>().PrefubsForSave.Add(gameObject);
         }
 
-
-
-        #endregion
-
-
-        #region Methods
-
         /// <summary>
         /// Set layer for current object and all his childrens for any level of attachment
         /// </summary>
-        /// <param name="obj">Object</param>
-        /// <param name="lvl">Layer</param>
         private void AskLayer(Transform obj, int lvl)
         {
             obj.gameObject.layer = lvl;
@@ -206,9 +209,6 @@ namespace FPS_Kotikov_D
         /// <summary>
         /// Set color for current object and all his childrens for any level of attachment
         /// </summary>
-        /// <param name="obj">Object</param>
-        /// <param name="mat">Material</param>
-        /// <param name="color">Color</param>
         private void AskColor(Transform obj, Color color)
         {
             if (obj.TryGetComponent<Renderer>(out var renderer))
@@ -224,6 +224,23 @@ namespace FPS_Kotikov_D
                 AskColor(d, color);
             }
         }
+
+        protected void ShowName(string name = default)
+        {
+            if (_isRaised)
+                GameUI.SetMessageBox = string.Empty;
+            else if (name != default)
+                GameUI.SetMessageBox = name;
+            else
+                GameUI.SetMessageBox = gameObject.name;
+        }
+
+        protected void RaiseUp()
+        {
+            if (_isRaised == true) return;
+            _isRaised = true;
+        }
+
 
         #endregion
 

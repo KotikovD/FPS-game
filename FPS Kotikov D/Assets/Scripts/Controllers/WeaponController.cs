@@ -9,10 +9,11 @@ namespace FPS_Kotikov_D.Controller
 
         #region Fields
 
-        private Weapons _weapon;
-        private WeaponsUI _weaponUI; // weapon UI is a part of weapon and must placed on a barrel
-        private PlayerController _playerController;
+        
 
+        private Weapons _weapon;
+        private PlayerController _playerController;
+        
         #endregion
 
 
@@ -20,32 +21,35 @@ namespace FPS_Kotikov_D.Controller
 
         public void Initialization()
         {
-            _weaponUI = Object.FindObjectOfType<WeaponsUI>();
-            _playerController  = ServiceLocator.Resolve<PlayerController>();
+            _playerController = ServiceLocator.Resolve<PlayerController>();
         }
 
         public void Execute()
         {
             if (!IsActive) return;
             if (_weapon == null) return;
+            if (!_weapon.AvailableForPlayer) return;
             _weapon.WeaponRotation(_playerController.HitPoint);
 
 #if UNITY_EDITOR
             Debug.DrawRay(_weapon.BulletSpawn.position, _weapon.BulletSpawn.forward *
                 GameObject.FindObjectOfType<Player>().MaxViewDistance, Color.blue);
 #endif
+            if (_weapon.WeaponUI != null)
+            {
+                _weapon.WeaponUI.ClipText = _weapon.CountClips;
 
-            _weaponUI.DrawUIclips(_weapon.CountClips);
-
-            if (_weapon.IsReloading)
-                _weaponUI.DrawUIAmmunitionReload();
-            else
-                _weaponUI.DrawUIammunition(_weapon.CurrentAmmunition);
+                if (_weapon.IsReloading)
+                    _weapon.WeaponUI.DrawUIReload();
+                else
+                    _weapon.WeaponUI.AmmunitionText = _weapon.CurrentAmmunition;
+            }
         }
 
         public void Fire()
         {
-            _weapon.Fire();
+            
+            _weapon.Fire(PlayerController.Hit.point);
         }
 
         public override void On(params BaseObjectScene[] weapon)
@@ -54,23 +58,25 @@ namespace FPS_Kotikov_D.Controller
             if (weapon.Length > 0)
                 _weapon = weapon[0] as Weapons;
             if (_weapon == null) return;
+            if (!_weapon.AvailableForPlayer) return;
 
             base.On(_weapon);
 
-            _weaponUI.transform.SetParent(_weapon.WeaponUIplace.transform);
-            _weaponUI.PlaceWeaponUI(_weapon.WeaponUIplace.transform);
+            _weapon.AddUIToWeapon();
             _weapon.Switch(true);
-
-            _weaponUI.SetActive(true);
+            _weapon.Shoot += _playerController.Player.CameraShake;
 
         }
 
         public override void Off()
         {
             if (!IsActive) return;
+            if (_weapon.IsReloading)
+                _weapon.ForceFinishReload();
+            _weapon.Shoot -= _playerController.Player.CameraShake;
             base.Off();
             _weapon.Switch(false);
-            _weaponUI.SetActive(false);
+            
         }
 
 

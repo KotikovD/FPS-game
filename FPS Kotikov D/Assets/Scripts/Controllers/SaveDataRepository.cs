@@ -26,7 +26,7 @@ namespace FPS_Kotikov_D.Data
 
         public void Save()
         {
-            
+
             if (!Directory.Exists(Path.Combine(_path)))
                 Directory.CreateDirectory(_path);
 
@@ -50,7 +50,6 @@ namespace FPS_Kotikov_D.Data
                 var player = objectsForSave[i].GetComponent<Player>();
                 if (player != null)
                 {
-                    Debug.Log("Get player component " + player);
                     objData.SPlayer = player;
                 }
 
@@ -70,8 +69,6 @@ namespace FPS_Kotikov_D.Data
             if (!File.Exists(filePath)) return;
 
             _serializableGameObjects.DestroyStartCoroutine(_data.Load(filePath));
-            //_serializableGameObjects.DestroyOldGameObjects(_data.Load(filePath));
-            //_serializableGameObjects.InstantiateGameObjects(_data.Load(filePath));
         }
     }
 }

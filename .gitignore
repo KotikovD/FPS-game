@@ -9,9 +9,15 @@
 [Bb]uilds/
 [Ll]ogs/
 [Mm]emoryCaptures/
+[Aa]ssets/DownloadAssets/
+[Aa]ssets/Resources/
+[Aa]ssets/SampleScenes/
+[Aa]ssets/Scenes/
+[Aa]ssets/Standard Assets/
 
 # Asset meta data should only be ignored when the corresponding asset is also ignored
 [Aa]ssets/**/*.meta
+
 
 # Uncomment this line if you wish to ignore the asset store tools plugin
 # /[Aa]ssets/AssetStoreTools*
@@ -47,8 +53,8 @@ ExportedObj/
 *.mdb
 *.opendb
 *.VC.db
-# *.fbx
-# *.asset
+*.fbx
+*.asset
 
 # Unity3D generated meta files
 *.pidb.meta
@@ -66,3 +72,11 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
+*.fbx
+*.mb
+*.png
+*.prefab
+*.mat
+*.wav
+*.unity
+*.prefab

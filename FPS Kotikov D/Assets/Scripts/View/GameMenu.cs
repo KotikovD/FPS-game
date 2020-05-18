@@ -25,7 +25,7 @@ namespace FPS_Kotikov_D
         public void ActiveGameMenu(bool value)
         {
             gameObject.SetActive(value);
-            Time.timeScale = value == true ? 0 : 1;
+            //Time.timeScale = value == true ? 0 : 1;
             MouseLook.LockCameraView = !value;
         }
 

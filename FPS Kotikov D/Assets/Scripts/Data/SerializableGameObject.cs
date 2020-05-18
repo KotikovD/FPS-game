@@ -8,12 +8,10 @@ namespace FPS_Kotikov_D.Data
     public struct SerializableGameObject
     {
         public string Name;
-        //public float PlayerHp;
         public SerializableVector3 Pos;
         public SerializableQuaternion Rot;
         public SerializableVector3 Scale;
         public SerializablePlayer SPlayer;
-        //public Component[] Components;
         public bool IsEnable;
 
         public override string ToString()
@@ -30,7 +28,7 @@ namespace FPS_Kotikov_D.Data
 
         public SerializablePlayer(Player player)
         {
-            CurrentHp = player.CurrentHp;
+            CurrentHp = Player.CurrentHp;
 
             var guns = player.GetComponentsInChildren<Gun>(true);
             Debug.Log("guns coun " + guns.Length);

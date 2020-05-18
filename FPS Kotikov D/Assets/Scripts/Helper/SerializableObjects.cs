@@ -61,7 +61,7 @@ namespace FPS_Kotikov_D
                 var player = newObj.GetComponent<Player>();
                 if (player)
                 {
-                    player.CurrentHp = obj.SPlayer.CurrentHp;
+                    Player.CurrentHp = obj.SPlayer.CurrentHp;
 
                     var guns = player.GetComponentsInChildren<Gun>();
                     foreach (var serilizeGun in obj.SPlayer.Guns)

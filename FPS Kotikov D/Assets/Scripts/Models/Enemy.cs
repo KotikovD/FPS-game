@@ -51,7 +51,7 @@ namespace FPS_Kotikov_D
         public void SetDamage(InfoCollision info)
         {
             if (IsDead) return;
-            Debug.Log(info.Damage);
+
             if (_currentHealth > 0)
                 _currentHealth -= info.Damage;
             

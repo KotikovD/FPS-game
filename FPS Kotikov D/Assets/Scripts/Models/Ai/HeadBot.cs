@@ -13,8 +13,7 @@ namespace FPS_Kotikov_D
         public void SetDamage(InfoCollision info)
         {
             Debug.Log(info.Damage * _damageMultipler + "head damage");
-            OnApplyDamageChange?.Invoke(new InfoCollision(info.Damage * _damageMultipler,
-                info.Contact, info.ObjCollision, info.Dir));
+            OnApplyDamageChange?.Invoke(info);
         }
     }
 }

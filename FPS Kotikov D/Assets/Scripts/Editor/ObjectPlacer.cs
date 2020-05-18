@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace FPS_Kotikov_D.Editor
+
+namespace ObjectPlacer
 {
     public class ObjectPlacer : EditorWindow
     {
@@ -12,101 +14,73 @@ namespace FPS_Kotikov_D.Editor
         #region Fields
 
         const int MINVALUE = 1;
-        const int MAXVALUE = 100;
-        const int MAXOBJECTS = 10;
-
-        private static int _howTotalObjects = 1;
-        private int _minDistance = 5;
+        const int MAXOBJECTS = 5;
+        const int MAXLONGSIDEOFNAVMESH = 200;
+        const int MAXCURRENTOBJECTS = 50;
+        private int _totalObjectsCount = 1;
         private int _maxDistance = 50;
-        private List<DataBlocks> _dataBlocks = new List<DataBlocks>();
-        private List<GameObject> _objects = new List<GameObject>();
-        private List<bool> _objectsGroups = new List<bool>();
+
         private GameObject _parentGO;
         private bool _randomRotation = true;
+        private Vector2 scrollPosition = Vector2.zero;
+
+        private List<DataBlocks> _dataBlocks = new List<DataBlocks>();
+        private List<GameObject> _objects = new List<GameObject>();
+
         #endregion
 
 
-        #region DataBlocks
+        #region DataBlocksClass
 
-        private class DataBlocks
+        [Serializable]
+        public class DataBlocks
         {
-            private GameObject _objectForPlace;
-            private int _howEachObjects;
-
-            public GameObject ObjectForPlace
-            {
-                get { return _objectForPlace; }
-                set { _objectForPlace = value; }
-            }
-
-            public int HowEachObjects
-            {
-                get { return _howEachObjects; }
-                set { _howEachObjects = value; }
-            }
-
-            public void CreateBlock()
-            {
-                GUILayout.BeginVertical();
-                GUILayout.Label("Prefub", EditorStyles.boldLabel);
-                _objectForPlace = EditorGUILayout.ObjectField("Game object", _objectForPlace, typeof(GameObject), true) as GameObject;
-                _howEachObjects = EditorGUILayout.IntField("How objects place?", _howEachObjects);
-                GUILayout.EndVertical();
-                GUILayout.Space(20);
-
-            }
-
+            public GameObject GameObj;
+            public int How;
         }
 
         #endregion
 
 
-        #region Window&GUIMetodths
+        #region Window
 
-        [MenuItem("MyEditorScripts/Object Placer")]
+        [MenuItem("Tools/Object Placer")]
         public static void ShowWindow()
         {
-            GetWindow(typeof(ObjectPlacer));
+            GetWindow(typeof(ObjectPlacer), false, "Object Placer");
         }
 
         private void OnGUI()
         {
+            scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition);
 
             GUILayout.Space(20);
-            _howTotalObjects = EditorGUILayout.IntSlider("How total objects?", _howTotalObjects, MINVALUE, MAXOBJECTS);
-            _minDistance = EditorGUILayout.IntSlider("Min Distance", _minDistance, MINVALUE, MAXVALUE);
-            _maxDistance = EditorGUILayout.IntSlider("Max Distance", _maxDistance, MINVALUE, MAXVALUE);
-            _randomRotation = EditorGUILayout.Toggle($"RandomRotation", _randomRotation);
+            GUILayout.Label("Total objects", EditorStyles.boldLabel);
+            _totalObjectsCount = EditorGUILayout.IntSlider(_totalObjectsCount, MINVALUE, MAXOBJECTS);
+            GUILayout.Label("Longest side of NavMesh (approx)", EditorStyles.boldLabel);
+            _maxDistance = EditorGUILayout.IntSlider(_maxDistance, MINVALUE, MAXLONGSIDEOFNAVMESH);
+            _randomRotation = EditorGUILayout.Toggle($"Y random rotation", _randomRotation);
             GUILayout.Space(20);
 
-            for (int i = 0; i < _howTotalObjects; i++)
+            for (int i = 0; i < _totalObjectsCount; i++)
             {
                 _dataBlocks.Add(new DataBlocks());
-                _dataBlocks[i].CreateBlock();
+                GUILayout.BeginVertical("Box");
+                _dataBlocks[i].GameObj = EditorGUILayout.ObjectField("Game object", _dataBlocks[i].GameObj, typeof(GameObject), true) as GameObject;
+                _dataBlocks[i].How = EditorGUILayout.IntSlider("Current object count", _dataBlocks[i].How, 0, MAXCURRENTOBJECTS);
+                GUILayout.EndVertical();
+                GUILayout.Space(10);
             }
 
             GUILayout.Space(20);
             if (GUILayout.Button("Place"))
                 CreateObjects();
 
-
-
-            GUILayout.Space(20);
-            for (int z = 0; z < _howTotalObjects; z++)
-            {
-                if (_objectsGroups.Count < _howTotalObjects)
-                    _objectsGroups.Add(false);
-
-                var name = _dataBlocks[z].ObjectForPlace == null ? "Prefub name" : _dataBlocks[z].ObjectForPlace.name;
-                _objectsGroups[z] = EditorGUILayout.Toggle($"{name}", _objectsGroups[z]);
-            }
-
             GUILayout.Space(10);
-            if (GUILayout.Button("Remove selected"))
-                RemoveGroup();
-            GUILayout.Space(10);
-            if (GUILayout.Button("Remove ALL"))
+            if (GUILayout.Button("Remove"))
                 RemoveAllObjects();
+
+            EditorGUILayout.EndScrollView();
         }
 
         #endregion
@@ -114,58 +88,122 @@ namespace FPS_Kotikov_D.Editor
 
         #region Metodths
 
-
         private void CreateObjects()
         {
             _parentGO = GameObject.Find("CreatedObjects");
             if (_parentGO == null)
                 _parentGO = new GameObject { name = "CreatedObjects" };
 
-            for (int a = 0; a < _howTotalObjects; a++)
+            for (int i = 0; i < _totalObjectsCount; i++)
             {
-                var block = _dataBlocks[a];
-                for (int i = 0; i < block.HowEachObjects;)
+                var block = _dataBlocks[i];
+                BoxCollider pastGameObject = default;
+
+                for (int b = 0; b < block.How;)
                 {
-                    var dis = Random.Range(_minDistance, _maxDistance);
-                    var randomPoint = Random.insideUnitSphere * dis;
+                    Vector3 point = pastGameObject == null ? default : pastGameObject.transform.position;
+                    var randomPoint = point + UnityEngine.Random.insideUnitSphere * _maxDistance;
+                    
+                    Quaternion rot = _randomRotation == false ? Quaternion.identity :
+                        new Quaternion(0, UnityEngine.Random.Range(0, 360), 0, UnityEngine.Random.Range(0, 360));
 
-                    Quaternion rot = _randomRotation == false ?
-                        Quaternion.identity :
-                        new Quaternion(0, Random.Range(0, 360), 0, Random.Range(0, 360));
+                    if (!NavMesh.SamplePosition(randomPoint, out var hit, 1f, NavMesh.AllAreas))
+                        continue;
 
-                    if (NavMesh.SamplePosition(randomPoint, out var hit, dis, NavMesh.AllAreas))
+
+                    //var buildSettings = NavMesh.GetSettingsCount();
+                    //for (int s = 0; s <= buildSettings; ++s)
+                    //{
+                    //    // Set Agent Types Height
+                    //    Debug.Log("tileSize " + NavMesh.GetSettingsByID(s).tileSize);
+                    //    Debug.Log("voxelSize " + NavMesh.GetSettingsByID(s).voxelSize);
+                    //    Debug.Log("voxelSize " + NavMesh.GetSettingsByID(s).a);
+                    //    // Note there is a Name Field
+                    //    // NavMesh.GetSettingsNameFromID(i);
+                    //}
+                    //NavMeshData.FindObjectOfType<PatchExtents>();
+                    //CorrectPosition(block.GameObj, hit.position, out Vector3 newPosition, out float minDistance);
+
+                    var bc = block.GameObj.GetComponent<BoxCollider>();
+                    if (bc == null)
+                        bc = block.GameObj.AddComponent<BoxCollider>();
+                    var newPosition = hit.position - bc.size / 2;
+                    newPosition.y = hit.position.y;
+
+                    
+                    var canInstantiate = false;
+                    if (_objects.Count > 0)
+                        foreach (var go in _objects)
+                        {
+                            var currentDistance = Vector3.Distance(go.transform.position, newPosition);
+                            var minDistance = bc.size / 2 + pastGameObject.size / 2;
+
+                            Debug.Log("minDistance " + minDistance);
+                            Debug.Log("currentDistance " + currentDistance);
+
+                           // var minDistance = 2.0f; //_maxDistance / 4;
+
+                            if (minDistance.x < currentDistance && minDistance.y < currentDistance)
+                            {
+                                
+                                pastGameObject = bc;
+                                canInstantiate = true;
+                            } 
+                            else
+                                continue;
+                        }
+                    else
                     {
-                        var obj = Instantiate(block.ObjectForPlace, hit.position, rot) as GameObject;
-                        obj.name = block.ObjectForPlace.name;
+                        pastGameObject = bc;
+                        canInstantiate = true;
+                    }
+
+                    // Почему-то спавнится только первый блок объектов
+                  //  DestroyImmediate(bc, true);
+
+                    if (canInstantiate)
+                    {
+                        var obj = Instantiate(block.GameObj, newPosition, rot) as GameObject;
+                        obj.name = block.GameObj.name;
                         obj.transform.parent = _parentGO.transform;
                         _objects.Add(obj);
-                        i++;
+                        b++;
                     }
                 }
             }
         }
 
+        
+
+        /// <summary>
+        /// Corrects the position of objects to the center of their Collider
+        /// </summary>
+        private void CorrectPosition(GameObject gameObj, Vector3 hit, out Vector3 newPosition, out float iqwe)
+        {
+            var bc = gameObj.GetComponent<BoxCollider>();
+            if (bc == null)
+                bc = gameObj.AddComponent<BoxCollider>();
+            newPosition = hit - bc.size / 2;
+            DestroyImmediate(bc, true);
+            newPosition.y = hit.y;
+            iqwe = newPosition.y;
+        }
+
+        //private float GetDistance(Vector3 position, Vector3 newPosition)
+        //{
+        //    return Mathf.Sqrt(Mathf.Pow(position.x - newPosition.x, 2) + Mathf.Pow(position.y - newPosition.y, 2));
+        //}
+
         private void RemoveAllObjects()
         {
             DestroyImmediate(GameObject.Find("CreatedObjects"));
-        }
-
-        private void RemoveGroup()
-        {
-            for (int i = 0; i < _howTotalObjects; i++)
-            {
-                if (_objectsGroups[i] == true)
-                    for (int a = 0; a < _dataBlocks[i].HowEachObjects; a++)
-                    {
-                        DestroyImmediate(GameObject.Find(_dataBlocks[i].ObjectForPlace.name));
-                    }
-            }
+            _objects.Clear();
         }
 
         #endregion
 
 
     }
+
+
 }
-
-

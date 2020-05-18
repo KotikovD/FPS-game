@@ -1,13 +1,13 @@
 ﻿using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
-using FPS_Kotikov_D.Data;
+
 
 namespace FPS_Kotikov_D.Controller
 {
     /// <summary>
     /// Read all inputs in programm 
     /// </summary>
-    public class InputController : BaseController, IExecute
+    public class InputController : BaseController, IExecute, IInitialization
     {
 
 
@@ -16,16 +16,24 @@ namespace FPS_Kotikov_D.Controller
         private bool _isActiveFlashlight = false;
         private bool _isActivePockePC = false;
         private bool _isActiveGameMenu = false;
+       // private bool _areHandsBusy = false;
+        private InteractionPoint _interaction;
 
         #endregion
 
 
         #region Methods
 
+        public void Initialization()
+        {
+            _interaction = GameObject.FindObjectOfType<InteractionPoint>();
+        }
+
 
         public void Execute()
         {
             if (!IsActive) return;
+          //  _areHandsBusy = _interaction.IsCatched;
 
             if (Input.GetKeyDown(KeyCode.Escape))
             {
@@ -59,6 +67,7 @@ namespace FPS_Kotikov_D.Controller
 
             if (Input.GetKeyDown(KeyCode.Alpha3))
             {
+                if (_interaction.IsCatched) return;
                 _isActivePockePC = !_isActivePockePC;
                 if (_isActivePockePC)
                 {
@@ -73,27 +82,62 @@ namespace FPS_Kotikov_D.Controller
 
             if (Input.GetKeyDown(KeyCode.Alpha0))
             {
-                ServiceLocator.Resolve<WeaponController>().Off();
+                
+                    ServiceLocator.Resolve<WeaponController>().Off();
             }
-
 
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
+                if (_interaction.IsCatched)
+                    _interaction.ReleaseObject();
                 SelectWeapon(0);
+                
             }
 
             if (Input.GetKeyDown(KeyCode.Alpha2))
             {
+                if (_interaction.IsCatched)
+                    _interaction.ReleaseObject();
                 SelectWeapon(1);
             }
 
-            
 
-            if (CrossPlatformInputManager.GetButtonDown("Fire1"))
+
+            if (Input.GetKeyDown(KeyCode.E))
             {
-                if (ServiceLocator.Resolve<WeaponController>().IsActive)
+                if (_interaction.IsCatched)
                 {
-                    ServiceLocator.Resolve<WeaponController>().Fire();
+                    _interaction.ReleaseObject();
+                }
+                else
+                {
+                    ServiceLocator.Resolve<PlayerController>().TryUse = true;
+                    //if (!_interaction.ObjCanCollect)
+                    //{
+                        
+                    //}
+                }
+            }
+
+            if (Input.GetKeyUp(KeyCode.E))
+            {
+                ServiceLocator.Resolve<PlayerController>().TryUse = false;
+            }
+
+
+
+            if (CrossPlatformInputManager.GetButton("Fire1"))
+            {
+                if (_interaction.IsCatched)
+                {
+                    _interaction.ThrowObject();
+                }
+                else
+                {
+                    if (ServiceLocator.Resolve<WeaponController>().IsActive)
+                    {
+                        ServiceLocator.Resolve<WeaponController>().Fire();
+                    }
                 }
             }
         }
@@ -103,16 +147,18 @@ namespace FPS_Kotikov_D.Controller
         /// <summary>
         /// Выбор оружия
         /// </summary>
-        /// <param name="i">Номер оружия</param>
         private void SelectWeapon(int i)
         {
             ServiceLocator.Resolve<WeaponController>().Off();
-            Weapons tempWeapon = ServiceLocator.Resolve<Inventory>().Weapons[i]; //todo инкапсулировать
+            Weapons tempWeapon = Player.Weapons[i]; //todo инкапсулировать
             if (tempWeapon != null)
             {
-                ServiceLocator.Resolve<WeaponController>().On(tempWeapon);
+               var weapon =  ServiceLocator.Resolve<PlayerController>().SwitchActiveWeapon(tempWeapon, true);
+                ServiceLocator.Resolve<WeaponController>().On(weapon);
             }
         }
+
+       
 
 
         #endregion
