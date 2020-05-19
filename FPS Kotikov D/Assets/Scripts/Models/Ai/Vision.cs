@@ -18,6 +18,11 @@ namespace FPS_Kotikov_D
 
         #region Methods
 
+        public bool CanAttack(Transform player, Transform target, float attackDistance)
+        {
+            return CalculateDistance(player, target) < attackDistance;
+        }
+
         public bool CanBotSeePlayer(Transform player, Transform target)
         {
             return CheckVisionDistance(player, target)
@@ -44,9 +49,15 @@ namespace FPS_Kotikov_D
 
         private bool CheckVisionDistance(Transform player, Transform target)
         {
-            var currentDistance = Vector3.Distance(player.position, target.position);
+            var currentDistance = CalculateDistance(player, target);
             return currentDistance < ActiveDistance;
         }
+
+        private float CalculateDistance(Transform player, Transform target)
+        {
+            return Vector3.Distance(player.position, target.position);
+        }
+
 
         #endregion
 

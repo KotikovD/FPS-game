@@ -6,6 +6,7 @@
         Patrol = 1,
         PointInspection = 2,
         PlayerDetected = 3,
-        Died = 4
+        PlayerAttack = 4,
+        Died = 5
     }
 }

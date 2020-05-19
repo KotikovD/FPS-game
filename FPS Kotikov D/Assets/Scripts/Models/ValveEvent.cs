@@ -31,6 +31,7 @@ namespace FPS_Kotikov_D
 
         private void Awake()
         {
+            base.Awake();
             var rb = GetComponent<Rigidbody>();
             rb.isKinematic = true;
             rb.useGravity = false;
@@ -68,7 +69,6 @@ namespace FPS_Kotikov_D
 
         private void StartAnimation()
         {
-            Debug.Log("Start anim");
             _sequence = DOTween.Sequence();
             _sequence.Append(transform.DORotate(_finishRotationValues, _duration, RotateMode.FastBeyond360));
             foreach (var obj in _dependenceObjects)
