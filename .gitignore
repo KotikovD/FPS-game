@@ -16,11 +16,10 @@ DoTween/
 DoTween Examples/
 Demigiant/
 ProjectSettings/
-Packages/**
+Packages/
 ProjectSettings/
 Packages/
 DataSave/
-Old/
 
 # Visual Studio cache directory
 .vs/
