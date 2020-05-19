@@ -59,16 +59,6 @@ namespace FPS_Kotikov_D
             _camera = Camera.main.transform;
         }
 
-        //private void OnEnable()
-        //{
-        //    ServiceLocator.Resolve<WeaponController>().Shoot += CameraShake;
-        //}
-
-        //private void OnDisable()
-        //{
-        //    ServiceLocator.Resolve<WeaponController>().Shoot -= CameraShake;
-        //}
-
         #endregion
 
 

@@ -223,7 +223,19 @@ namespace FPS_Kotikov_D
             _animator.SetFloat("ShootRecharge", reCharge);
         }
 
+        public void WeaponDrop()
+        {
+            _animator.enabled = false;
+            transform.SetParent(null, true);
+            
 
+            var rigidbody = GetComponent<Rigidbody>();
+            rigidbody.useGravity = true;
+            rigidbody.isKinematic = false;
+
+            var boxCollider = GetComponent<BoxCollider>();
+            boxCollider.isTrigger = false;
+        }
 
         #endregion
 
