@@ -1,5 +1,9 @@
 # First Person Shooter game
+Gameplay video [https://youtu.be/GCSgia1ichk](https://youtu.be/GCSgia1ichk)
 
-- Please use Flowchart to understand how the program works.
-- Here is just scripts, build will after complete the work.
-- Work on the project is underway from 25.02.2020 to present time
+Screenshots:
+
+| ![Screenshot](https://github.com/KotikovD/FPS-game/blob/master/Screen1.jpg "Screenshot") | ![Screenshot](https://github.com/KotikovD/FPS-game/blob/master/Screen3.jpg "Screenshot") |
+|----:|:----:|
+|![Screenshot](https://github.com/KotikovD/FPS-game/blob/master/Screen4.jpg "Screenshot") |![Screenshot](https://github.com/KotikovD/FPS-game/blob/master/Screen5.jpg "Screenshot") | 
+|![Screenshot](https://github.com/KotikovD/FPS-game/blob/master/Screen6.jpg "Screenshot") |![Screenshot](https://github.com/KotikovD/FPS-game/blob/master/Screen7.jpg "Screenshot") |
